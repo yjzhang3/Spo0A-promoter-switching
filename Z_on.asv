@@ -1,4 +1,4 @@
-function Z = Z_on(nbd,config_prof,G0)
+function Z = Z_on(nbd,config_prof)
 % input:
 % nbd: number of binding site
 % config_prof: used for calculating the free energy of each configuration.
@@ -15,7 +15,7 @@ bins = dec2bin(0:(2^nbd-1), nbd) - '0';
 
 % then found configurations that are ON (last digit == 1)
 ind = find(bins(:,end)==1);
-on_config = bins(ind,:);
+on_config = bins(ind,:)
 
 
 %% calculate partition function
@@ -28,17 +28,16 @@ for ll = 1:length(on_config) % for all on configurations
     conc_arr = config_prof(ind(ll)).conc_arr;
     num_arr = config_prof(ind(ll)).num_arr;
     
-    fe_on = free_energy(G0,conc_arr,num_arr);
+    fe_on = free_energy(conc_arr,num_arr)
     Z = Z + exp(-fe_on);
     Z_test(ll) = Z;
 end
 
-% figure();
-% plot(1:length(on_config),Z_test);
-% xlabel('configuration #')
-% ylabel('partition function value') 
-% title('Z on') 
-
+figure();
+plot(1:length(on_config),Z_test);
+xlabel('configuration #')
+ylabel('partition function value') 
+title('Z on')
 end
             
         
