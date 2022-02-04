@@ -8,7 +8,7 @@ function t_overall = gen_fake_tdata(tspan,nbd,tfunc)
 % number of rows for next step
 
 % total time of experiment 
-% tspan = 10;
+tall = [0:0.01:tspan];
 
 % number of binding boxes
 % nbd = 3;
@@ -28,7 +28,7 @@ for tt = 1:tspan % at each time point
     for nn = 1:2^nbd % each profile contains 2^n possible configurations, for each configurati
         
         curr_config = bins(nn,:); % print out current configuration
-        curr_conc = tfunc(tt);
+        curr_conc = tfunc(tall(tt));
         [n_arr,c_arr] = gen_prof(curr_config,curr_conc);
         
         % record two fields for each configuration to complete information

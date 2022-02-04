@@ -1,15 +1,8 @@
 function TR_overall = transcription_rate(tspan,nbd,tfunc,G0)
-% input: 
-% tspan: time for simulation
-% nbd: # of binding sites
-% tfunc: how TF increases over time
-% G0 = standard free energy
-
-% output: transcription rate
 
 % generate time dependent configuration profiles
 t_overall = gen_fake_tdata(tspan,nbd,tfunc);
-conc_overall = zeros(tspan,1);
+conc_overall = zeros(length(t_overall),1);
 
 TR_overall = zeros(tspan,0);
 for tt = 1:tspan
@@ -19,7 +12,7 @@ for tt = 1:tspan
     Zon = Z_on(nbd,t_overall(lb:ub),G0);
 
     % partition function Z_off
-    Zoff = Z_off(nbd,t_overall(lb:ub),G0);
+    Zoff = Z_off(nbd,t_overall(lb:ub),G0)
     
     ca = t_overall(lb).conc_arr;
     conc_overall(tt) = ca(1);

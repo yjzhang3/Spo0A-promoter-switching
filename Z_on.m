@@ -32,7 +32,7 @@ for ll = 1:length(on_config) % for all on configurations
     Z = Z + exp(-fe_on);
     Z_test(ll) = Z;
 end
-
+% 
 % figure();
 % plot(1:length(on_config),Z_test);
 % xlabel('configuration #')
