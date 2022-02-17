@@ -1,13 +1,13 @@
-function [n_arr,c_arr] = gen_prof(config,TF_conc)
+function [n_arr,c_arr] = gen_config_prof(config,TF_conc)
 % input: a specific configuration (specified by 01 array)
 % output: the number and concentration profile for each configuration
 
 n_arr = zeros(2,1); % assume only two types of protein, TF and RNAP
 c_arr = zeros(2,1); % assume only two types of protein, TF and RNAP
 
-if config(end) == 1 % assume RNAP conc is always 0.1 and of one molecule
+if config(end) == 1 % assume RNAP conc is always 1 and of one molecule
     n_arr(end) = 1;
-    c_arr(end) = 2000; 
+    c_arr(end) = 100; 
 end
 
 % assume besides RNAP, all the other binding sites are bound by *one* type

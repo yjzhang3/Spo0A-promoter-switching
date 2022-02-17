@@ -1,9 +1,9 @@
-function Z = Z_on(nbd,config_prof,G0)
-% input:
+function Z = Z_on(nbd,energyi,typei,coopi,TF_conc)
 % nbd: number of binding site
-% config_prof: used for calculating the free energy of each configuration.
-% It'll be a struct array, and each element has two fields, conc_arr and
-% num_arr
+% typei: type of each TF (activator > 1, repressor < 1), excluding mRNA
+% each number represents the activating or repressive power, which is just
+% the factor that accounts for TF-mRNA interaction
+% coopi: TF-TF cooperativity of each configuration
 
 % output:
 % Z = partition function of all the configurations when transcription
@@ -20,25 +20,24 @@ on_config = bins(ind,:);
 
 %% calculate partition function
 Z = 0;
-Z_test = zeros(length(on_config),1);
+
 for ll = 1:length(on_config) % for all on configurations
     curr_config = on_config(ll,:); % current configuration, just print out
     
-    % index the conc and num profile of this configuration
-    conc_arr = config_prof(ind(ll)).conc_arr;
-    num_arr = config_prof(ind(ll)).num_arr;
+    fe_on = free_energy(curr_config,energyi,TF_conc);
     
-    fe_on = free_energy(G0,conc_arr,num_arr);
-    Z = Z + exp(-fe_on);
-    Z_test(ll) = Z;
-end
-% 
-% figure();
-% plot(1:length(on_config),Z_test);
-% xlabel('configuration #')
-% ylabel('partition function value') 
-% title('Z on') 
+    list_int = typei.*curr_config(1:end-1); % calculate TF-mRNA interacton at each site
+    % if a binding site is not occupied (0), then it can't have TF-mRNA
+    % interaction, which is 0
+    
+    curr_Q = TF_mRNA_int(list_int,2); % calculate TF-mRNA interaction 
+       % influence on the entire configuration (exclude the last digit
+       % because it represents mRNA itself)
+       % mode == 1, meaning we are using additive model
+    
+    Z = Z + curr_Q*coopi(ll)*exp(-fe_on);
 
+end
 end
             
         

@@ -1,9 +1,8 @@
-function Z = Z_off(nbd,config_prof,G0)
+function Z = Z_off(nbd,energyi,coopi,TF_conc)
 % input:
 % nbd: number of binding site
-% config_prof: used for calculating the free energy of each configuration.
-% It'll be a struct array, and each element has two fields, conc_arr and
-% num_arr
+% energyi: binidng energy of ea
+% coopi: TF-TF cooperativity of each configuration
 
 % output:
 % Z = partition function of all the configurations when transcription
@@ -19,18 +18,14 @@ off_config = bins(ind,:);
 
 %% calculate partition function
 Z = 0;
-Z_test = zeros(length(off_config),1);
 
 for ll = 1:length(off_config) % for all on configurations
     curr_config = off_config(ll,:); % current configuration, just print out
     
-    % index the conc and num profile of this configuration
-    conc_arr = config_prof(ind(ll)).conc_arr;
-    num_arr = config_prof(ind(ll)).num_arr;
+    fe_off = free_energy(curr_config,energyi,TF_conc);
     
-    fe_off = free_energy(G0,conc_arr,num_arr);
-    Z = Z + exp(-fe_off);
-    Z_test(ll) = Z;
+    Z = Z + coopi(ll)*exp(-fe_off);
+
 end
 
 % figure();

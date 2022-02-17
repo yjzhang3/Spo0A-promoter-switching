@@ -1,0 +1,12 @@
+function Q = TF_mRNA_int(list_int,mode)
+% input: a list of TF-mRNA interactions per *site*
+% output: factor Q that accounts for total TF-mRNA interacton per *config*
+
+if mode == 1 % multiplicative model, meaning each TF-mRNA interaction could
+    Q =prod(list_int, 'all' ); 
+else
+    Q = sum(list_int); % additive model, meaaning each TF-mRNA interaction 
+    % is independent of each othere
+end
+
+end

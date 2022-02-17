@@ -1,34 +1,24 @@
-function TR_overall = transcription_rate(tspan,nbd,tfunc,G0)
+function TR = transcription_rate(nbd,TF_conc,energyi,typei,coopi)
 % input: 
-% tspan: time for simulation
 % nbd: # of binding sites
-% tfunc: how TF increases over time
-% G0 = standard free energy
+% TF_concentration (assuming only one TF involved in the problem)
+% energyi: binding energy of each binding site and promoter
+% typei: active or repressive power of each TF (>1 or <1, TF-mRNA
+% interaction)
+% coopi: cooperativity of each configuration (should have 2^(nbd-1) terms
+% because we only consider cooperativity between each TF
 
 % output: transcription rate
 
-% generate time dependent configuration profiles
-t_overall = gen_fake_tdata(tspan,nbd,tfunc);
-conc_overall = zeros(tspan,1);
+% generate time dependent concentration
 
-TR_overall = zeros(tspan,0);
-for tt = 1:tspan
-    % partition function Z_on
-    lb = (tt-1)*2^nbd+1;
-    ub = tt*2^nbd;
-    Zon = Z_on(nbd,t_overall(lb:ub),G0);
 
-    % partition function Z_off
-    Zoff = Z_off(nbd,t_overall(lb:ub),G0);
+% partition function Z_on
+Zon = Z_on(nbd,energyi,typei,coopi,TF_conc);
+
+% partition function Z_off
+Zoff = Z_off(nbd,energyi,coopi,TF_conc);
     
-    ca = t_overall(lb).conc_arr;
-    conc_overall(tt) = ca(1);
-    
-    TR_overall(tt) = Zon/(Zon+Zoff);
+TR = Zon/(Zon+Zoff);
+
 end
-
-plot(1:tspan,TR_overall)
-hold on
-plot(1:tspan,conc_overall)
-xlabel('time')
-legend('TR','conc of TF')

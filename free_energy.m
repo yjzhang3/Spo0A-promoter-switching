@@ -1,6 +1,6 @@
-function Gtot = free_energy(G0,conc_arr,num_arr)
+function Gtot = free_energy(config,energyi,TF_conc)
 % input: 
-% conc_arr: concentration of each protein present i in this configuration
+% conc_arr: concentration of each protein i present in this configuration
 % num_arr: number of each protein i present in this config
 
 % same index refers to the same type of protein
@@ -16,13 +16,19 @@ function Gtot = free_energy(G0,conc_arr,num_arr)
 % output: 
 % Gtot: free energy of each *configuration*
 
-%% constant
-% standard free energy of the configuration
-% G0 = 10;
+%% standard free energy of the configuration
+G0 = stand_energy(config,energyi);
+
+
+%% concentration and number array for this configuration
+
+[num_arr,conc_arr] = gen_config_prof(config,TF_conc);
+
 
 %% formula 
 % Gtot = G0 - sum(num_arr.*log(conc_arr)); % this can't deal with exception 
 % concentration is 0!
+
 Gtot = G0; % start with G0
 for cc = 1:length(conc_arr)
     if conc_arr(cc) ~= 0
