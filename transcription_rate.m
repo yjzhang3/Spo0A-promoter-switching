@@ -1,4 +1,4 @@
-function TR = transcription_rate(nbd,TF_conc,energyi,typei,coopi)
+function TR = transcription_rate(nbd,energyi,TF_conc,mRNA_conc)
 % input: 
 % nbd: # of binding sites
 % TF_concentration (assuming only one TF involved in the problem)
@@ -14,10 +14,10 @@ function TR = transcription_rate(nbd,TF_conc,energyi,typei,coopi)
 
 
 % partition function Z_on
-Zon = Z_on(nbd,energyi,typei,coopi,TF_conc);
+Zon = Z_on(nbd,energyi,TF_conc,mRNA_conc);
 
 % partition function Z_off
-Zoff = Z_off(nbd,energyi,coopi,TF_conc);
+Zoff = Z_off(nbd,energyi,TF_conc,mRNA_conc);
     
 TR = Zon/(Zon+Zoff);
 

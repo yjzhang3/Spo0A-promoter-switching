@@ -1,0 +1,9 @@
+energyi_normal = [1,1,10,0,0,0];
+energyi_actB = [1,1,10,0,-0.77,0]; % TF of site B and mRNA have interactions
+mRNA_conc = 700;
+TF_conc = 700;
+nbd = 3;
+
+TR_normal = transcription_rate(nbd,energyi_normal,TF_conc,mRNA_conc);
+TR_actB = transcription_rate(nbd,energyi_actB,TF_conc,mRNA_conc);
+

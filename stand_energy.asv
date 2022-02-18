@@ -2,8 +2,7 @@ function G0 = stand_energy(config,energyi)
 % input:
 % energyi: where first n elements are
 % binding energy of each site, and the rest are interaction energy for
-% every possible pair. The pair should follow the order, 12,13,14..1n,
-% 23,24,25,..2n,
+% every possible pair.
 
 nbd = length(config);
 energy_per_site = energyi(1:nbd);
@@ -20,14 +19,9 @@ G0 = sum(config.*energy_per_site, 'all' );
 % pair of interactions. 
 % if a pair doesn't interact, then the energy is 0
 
-count = 0; % count the number of unique pairs
 for ii = 1:nbd-1
     for jj = ii+1:nbd
-        count = count+1;
-        G0 = G0 + config(ii)*config(jj)*int_energy_per_pair(count);
-    end
-end
-
+        G0 = G0 + config(ii)*config(jj)*int_energy_per_pair
 end
 
 

@@ -1,4 +1,4 @@
-function Z = Z_off(nbd,energyi,coopi,TF_conc)
+function Z = Z_off(nbd,energyi,TF_conc,mRNA_conc)
 % input:
 % nbd: number of binding site
 % energyi: binidng energy of ea
@@ -16,15 +16,13 @@ bins = dec2bin(0:(2^nbd-1), nbd) - '0';
 ind = find(bins(:,end)==0);
 off_config = bins(ind,:);
 
-%% calculate partition function
+%% calculate partition function where mRNA does not bind
 Z = 0;
 
 for ll = 1:length(off_config) % for all on configurations
     curr_config = off_config(ll,:); % current configuration, just print out
     
-    fe_off = free_energy(curr_config,energyi,TF_conc);
-    
-    Z = Z + coopi(ll)*exp(-fe_off);
+    Z = Z+Z_perconfig(curr_config,energyi,TF_conc,mRNA_conc);
 
 end
 
