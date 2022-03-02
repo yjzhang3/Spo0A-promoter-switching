@@ -1,4 +1,4 @@
-function Z = Z_on(nbd,energyi,TF_conc,mRNA_conc)
+function Z = Z_on(nbd,energyi,TF_conc,RNAp_conc)
 % nbd: number of binding site
 % typei: type of each TF (activator > 1, repressor < 1), excluding mRNA
 % each number represents the activating or repressive power, which is just
@@ -24,7 +24,7 @@ Z = 0;
 for ll = 1:length(on_config) % for all on configurations
     curr_config = on_config(ll,:); % current configuration, just print out
     
-    Z = Z+Z_perconfig(curr_config,energyi,TF_conc,mRNA_conc);
+    Z = Z+Z_perconfig(curr_config,energyi,TF_conc,RNAp_conc);
 
 end
 

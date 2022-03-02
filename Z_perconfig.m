@@ -1,6 +1,6 @@
-function Z = Z_perconfig(config,energyi,TF_conc,mRNA_conc)
+function Z = Z_perconfig(config,energyi,TF_conc,RNAp_conc)
 
-Gtot = free_energy(config,energyi,TF_conc,mRNA_conc);
+Gtot = free_energy(config,energyi,TF_conc,RNAp_conc);
 
 Z = exp(-Gtot);
 

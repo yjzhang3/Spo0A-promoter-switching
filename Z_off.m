@@ -1,4 +1,4 @@
-function Z = Z_off(nbd,energyi,TF_conc,mRNA_conc)
+function Z = Z_off(nbd,energyi,TF_conc,RNAp_conc)
 % input:
 % nbd: number of binding site
 % energyi: binidng energy of ea
@@ -22,7 +22,7 @@ Z = 0;
 for ll = 1:length(off_config) % for all on configurations
     curr_config = off_config(ll,:); % current configuration, just print out
     
-    Z = Z+Z_perconfig(curr_config,energyi,TF_conc,mRNA_conc);
+    Z = Z+Z_perconfig(curr_config,energyi,TF_conc,RNAp_conc);
 
 end
 

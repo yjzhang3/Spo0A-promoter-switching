@@ -1,4 +1,4 @@
-function Gtot = free_energy(config,energyi,TF_conc,mRNA_conc)
+function Gtot = free_energy(config,energyi,TF_conc,RNAp_conc)
 % input: 
 % conc_arr: concentration of each protein i present in this configuration
 % num_arr: number of each protein i present in this config
@@ -22,7 +22,7 @@ G0 = stand_energy(config,energyi);
 
 %% concentration and number array for this configuration
 
-[num_arr,conc_arr] = gen_config_prof(config,TF_conc,mRNA_conc);
+[num_arr,conc_arr] = gen_config_prof(config,TF_conc,RNAp_conc);
 
 
 %% formula 

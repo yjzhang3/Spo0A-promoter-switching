@@ -1,4 +1,4 @@
-function [E_all,TR_all] = tuning(step,stepsize,pos_all,RNAp_conc,tspan,TF_conc_t,nbd,original)
+function TR_all = tuning(step,stepsize,pos_all,RNAp_conc,tspan,TF_conc_t,nbd,original)
 
 % input:
 % step = 2; % how many steps we want to test up and down
@@ -36,15 +36,14 @@ for ss = 1:length(all_combo) % for each variation
         TR_t_curr(tt) = curr;
     end
     
-    E_all(ss,:) = energyi_variation;
-    TR_all(ss,:) = TR_t_curr;
+    TR_all(:,ss) = TR_t_curr;
     
-    plot(1:tspan,TR_t_curr,'LineWidth',4)
-    spec1 = sprintf('energy config %d',ss);
+    plot(1:tspan,TR_t_curr)
+    spec1 = sprintf('TR-RNAp energiese are %d, %d, and %d',energyi_variation(pos_all(1)),energyi_variation(pos_all(2))); 
     yline(TR_t_curr(tt-1),'--',spec1)
     xlabel('time')
     ylabel('transcription rate')
-    spec2 = sprintf('tuning p-p attraction (%d sites simultaneously)',length(pos_all));
+    spec2 = sprintf('tuning TF-RNAp attraction (%d sites simultaneously)',length(pos_all));
     title(spec2)
     hold on
     set(gca,'FontSize',15)
