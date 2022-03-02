@@ -1,12 +1,9 @@
 function TR = transcription_rate(nbd,energyi,TF_conc,mRNA_conc)
 % input: 
 % nbd: # of binding sites
-% TF_concentration (assuming only one TF involved in the problem)
+% TF_conc and mRNA conc (assuming only one TF involved in the problem)
 % energyi: binding energy of each binding site and promoter
-% typei: active or repressive power of each TF (>1 or <1, TF-mRNA
-% interaction)
-% coopi: cooperativity of each configuration (should have 2^(nbd-1) terms
-% because we only consider cooperativity between each TF
+
 
 % output: transcription rate
 

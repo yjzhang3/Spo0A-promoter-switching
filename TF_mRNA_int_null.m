@@ -1,4 +1,4 @@
-function Q = TF_mRNA_int(list_int,mode)
+function Q = TF_mRNA_int_null(list_int,mode)
 % input: a list of TF-mRNA interactions per *site*
 % output: factor Q that accounts for total TF-mRNA interacton per *config*
 
@@ -13,7 +13,7 @@ if mode == 2
     % is independent of each other
 end
 if Q == 0  
-    Q = 1
+    Q = 1;
 end
 
 end

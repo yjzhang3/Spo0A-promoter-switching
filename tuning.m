@@ -1,5 +1,6 @@
 function success = tuning(step,stepsize,pos_all,mRNA_conc,tspan,TF_conc_t,nbd,original)
 
+% input:
 % step = 2; % how many steps we want to test up and down
 % % then we would generate 2*step more energy arrays
 % % total there is 2*step+1 arrays
@@ -12,23 +13,23 @@ function success = tuning(step,stepsize,pos_all,mRNA_conc,tspan,TF_conc_t,nbd,or
 % nbd = 3;
 % mRNA_conc = 1000;
 % 
-% % A activates mRNA, B repels mRNA
-% original = [0.5,0.8,20,0,-5,5];
-% % energyi_variation = energyi_normal,power(2*step,num_pos)+1);
-% % energyi_variation(:,end) = energyi_normal;
+% original: original energy array
+
+% output: new transcription rate
 
 
+% generate all possible energy values at the position we want to tune 
 all_combo = nmultichoosek([0-step:0+step],length(pos_all));
 
 
-for ss = 1:length(all_combo)
+for ss = 1:length(all_combo) % for each variation 
     energyi_normal = original;
-    for nn = 1:length(pos_all)
+    for nn = 1:length(pos_all) % generate energy profile
         energyi_variation = change_ele(energyi_normal,pos_all(nn),all_combo(ss,nn).*stepsize);
         energyi_normal = energyi_variation;
     end
     
-    for tt = 1:tspan
+    for tt = 1:tspan % then plot time-dependent TR
         curr = transcription_rate(nbd,energyi_variation,TF_conc_t(tt),mRNA_conc);
         TR_t_curr(tt) = curr;
     end
