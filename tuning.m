@@ -44,7 +44,7 @@ for ss = 1:length(all_combo) % for each variation
     yline(TR_t_curr(tt-1),'--',spec1)
     xlabel('time')
     ylabel('transcription rate')
-    spec2 = sprintf('tuning p-p attraction (%d sites simultaneously)',length(pos_all));
+    spec2 = sprintf('tuning p-p attraction (%d energy values simultaneously)',length(pos_all));
     title(spec2)
     hold on
     set(gca,'FontSize',15)
