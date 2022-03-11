@@ -16,16 +16,14 @@ for nn = 1:length(TR_all(:,1))
     % how much time does it take to reach maximum
 
     plot(1:tspan,TR_all(nn,:),'LineWidth',4)
-    ylim([0 1])
     
     spec1 = sprintf('energy config %d',nn);
     yline(TR_all(nn,end),'--',spec1)
     
-    if nn > 1
-        ind = find(TR_all(nn,:) >= max(TR_all(nn,:))*0.99);
-        ind(1)
+    if 
+        ind = find(TR_all(nn,:) >= 0.99);
         spec2 = sprintf('takes %d sec to reach max',ind(1));
-        xline(ind(1),'--',spec2)
+        xline(TR_all(nn,ind(1)),'--',spec2)
     end
     
 
@@ -36,7 +34,6 @@ for nn = 1:length(TR_all(:,1))
     set(gca,'FontSize',15)
 end
 
-final = TR_all(:,end);
 
 %% repression from two TF-RNAp interaction
 close all
@@ -55,13 +52,6 @@ for nn = 1:length(TR_all_2(:,1))
     
     spec1 = sprintf('energy config %d',nn);
     yline(TR_all_2(nn,end),'--',spec1)
-    
-    if nn > 1
-        ind = find(TR_all_2(nn,:) >= max(TR_all_2(nn,:))*0.99);
-        ind(1)
-        spec2 = sprintf('takes %d sec to reach max',ind(1));
-        xline(ind(1),'--',spec2)
-    end
 
     xlabel('time')
     ylabel('transcription rate')
@@ -69,4 +59,4 @@ for nn = 1:length(TR_all_2(:,1))
     hold on
     set(gca,'FontSize',15)
 end
-final_2 = TR_all_2(:,end);
+

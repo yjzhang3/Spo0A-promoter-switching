@@ -14,9 +14,17 @@ pos = 7; % A-RNAp
 
 for nn = 1:length(TR_all(:,1))
     plot(1:tspan,TR_all(nn,:),'LineWidth',4)
+    ylim([0 1])
     
     spec1 = sprintf('energy config %d',nn);
     yline(TR_all(nn,end),'--',spec1)
+    
+    if nn > 1
+        ind = find(TR_all(nn,:) <= min(TR_all(nn,:))*1.01);
+        ind(1)
+        spec2 = sprintf('takes %d sec to reach max',ind(1));
+        xline(ind(1),'--',spec2)
+    end
 
     xlabel('time')
     ylabel('transcription rate')
@@ -24,7 +32,7 @@ for nn = 1:length(TR_all(:,1))
     hold on
     set(gca,'FontSize',15)
 end
-
+final = TR_all(:,end);
 
 %% repression from two TF-RNAp interaction
 close all
@@ -39,9 +47,17 @@ pos = 9; % B-RNAp
 figure();
 for nn = 1:length(TR_all_2(:,1))
     plot(1:tspan,TR_all_2(nn,:),'LineWidth',4)
+    ylim([0 1])
     
     spec1 = sprintf('energy config %d',nn);
     yline(TR_all_2(nn,end),'--',spec1)
+    
+    if nn > 1
+        ind = find(TR_all_2(nn,:) <= min(TR_all_2(nn,:))*1.01);
+        ind(1)
+        spec2 = sprintf('takes %d sec to reach max',ind(1));
+        xline(ind(1),'--',spec2)
+    end
 
     xlabel('time')
     ylabel('transcription rate')
@@ -49,5 +65,5 @@ for nn = 1:length(TR_all_2(:,1))
     hold on
     set(gca,'FontSize',15)
 end
-
+final_2 = TR_all_2(:,end);
 

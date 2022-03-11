@@ -1,4 +1,4 @@
-function [WT,mut1,mut2,mut3,mut12,mut13,mut23,mut123] = read_data(data)
+function all_data = read_data(data)
 % input: real data collected from experiment
 % output: different time dependent transcription rate (each as an array) at
 % different mutation conditions
@@ -12,6 +12,8 @@ mut12 = data(:,5);
 mut13 = data(:,6);
 mut23 = data(:,7);
 mut123 = data(:,8);
+
+all_data = [WT,mut1,mut2,mut3,mut12,mut13,mut23,mut123];
 
 
 
