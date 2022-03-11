@@ -1,0 +1,16 @@
+function energyi = fit_data(real_data,TF_conc_t,nbd,energyi)
+% input: real data, time dependent TF concentration, number of binding
+% sites. Energyi is the parameter to find for
+
+%% parameters
+rng default
+lb = zeros(1,11)-1E-2; % neq
+lb(1) = 1; % lower bound for RNAp concentration is nonzero
+
+ub = zeros(1,11)+1E+3; % neq
+
+fun = @(RNAp_conc,a,b,c,p,ab,ac,ap,bc,bp,cp) objective_function(real_data,TF_conc_t,RNAp_conc,nbd,[a,b,c,p,ab,ac,ap,bc,bp,cp]);
+
+nvars = 11; 
+
+%

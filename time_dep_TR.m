@@ -7,10 +7,10 @@ for tt = 0:tspan-1
 end
 
 % figure();
-plot(1:tspan,TR_overall,'LineWidth',5)
-hold on
-xlabel('time')
-ylabel('transcription rate')
-ylim([0 1])
-set(gca,'FontSize',17)
+% plot(1:tspan,TR_overall,'LineWidth',5)
+% hold on
+% xlabel('time')
+% ylabel('transcription rate')
+% ylim([0 1])
+% set(gca,'FontSize',17)
 end

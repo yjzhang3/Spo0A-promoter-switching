@@ -9,4 +9,3 @@ end
 
 %% plot
 plot_data(all_data(:,2))
-

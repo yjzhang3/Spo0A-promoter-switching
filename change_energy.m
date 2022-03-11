@@ -10,6 +10,7 @@ for nn = 1:length(B(:,1))
     
     TR_curr = time_dep_TR(TF_conc_t,tspan,RNAp_conc,nbd,B(nn,:));
     TR_all(nn,:) = TR_curr;
+    
 end 
 
     
