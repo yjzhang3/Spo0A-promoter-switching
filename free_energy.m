@@ -26,18 +26,18 @@ G0 = stand_energy(config,energyi);
 
 
 %% formula 
-% Gtot = G0 - sum(num_arr.*log(conc_arr)); % this can't deal with exception 
+Gtot = G0 - sum(num_arr.*log(conc_arr)); % this can't deal with exception 
 % concentration is 0!
 
-Gtot = G0; % start with G0
-for cc = 1:length(conc_arr)
-    if conc_arr(cc) ~= 0
-        ct = num_arr(cc)*log(conc_arr(cc)); % correction term at this iteration
-    else
-        ct = 0;
-    end
-    
-    Gtot = Gtot-ct;
-end
+% Gtot = G0; % start with G0
+% for cc = 1:length(conc_arr)
+%     if conc_arr(cc) ~= 0
+%         ct = num_arr(cc)*log(conc_arr(cc)); % correction term at this iteration
+%     else
+%         ct = 0;
+%     end
+%     
+%     Gtot = Gtot-ct;
+% end
 
 end

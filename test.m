@@ -1,0 +1,15 @@
+
+subplot(1,2,1)
+TR_overall = time_dep_TR(TF_conc_t,length(real_data)*3600,x(1),nbd,x(2:end))
+plot(TR_overall,'LineWidth',4)
+xlabel('time (sec)')
+ylabel('transcription rate')
+set(gca,'FontSize',12)
+title('simulated data')
+
+subplot(1,2,2)
+plot(real_data,'LineWidth',4)
+xlabel('time (hr)')
+ylabel('promoter activity')
+set(gca,'FontSize',12)
+title('experimental data')

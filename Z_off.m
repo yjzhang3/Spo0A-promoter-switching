@@ -1,4 +1,4 @@
-function Z = Z_off(nbd,energyi,TF_conc,RNAp_conc)
+function Z = Z_off(nbd,energyi,TF_conc,RNAp_conc,mut)
 % input:
 % nbd: number of binding site
 % energyi: binidng energy of ea
@@ -11,6 +11,13 @@ function Z = Z_off(nbd,energyi,TF_conc,RNAp_conc)
 %% list all possible configurations, 
 % with last digit being if RNAP bound or not
 bins = dec2bin(0:(2^nbd-1), nbd) - '0';
+
+% consider mutated sites
+for ss = 1:length(mut)
+    if mut(ss) == 0
+        bins(:,ss) = 0;
+    end
+end
 
 % then found configurations that are ON (last digit == 1)
 ind = find(bins(:,end)==0);
@@ -26,11 +33,6 @@ for ll = 1:length(off_config) % for all on configurations
 
 end
 
-% figure();
-% plot(1:length(off_config),Z_test);
-% xlabel('configuration #')
-% ylabel('partition function value') 
-% title('Z off')
 
 end
             

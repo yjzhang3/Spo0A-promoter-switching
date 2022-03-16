@@ -7,8 +7,9 @@ c_arr = zeros(2,1); % assume only two types of protein, TF and RNAP
 
 if config(end) == 1 % assume RNAP is of one molecule
     n_arr(end) = 1;
-    c_arr(end) = RNAp_conc; 
 end
+
+c_arr(end) = RNAp_conc; 
 
 % assume besides RNAP, all the other binding sites are bound by *one* type
 % of TF
