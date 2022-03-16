@@ -4,7 +4,6 @@ function diff = objective_function(nbd,p,TF_conc_t,mut_mat,real_data)
 RNAp_conc = p(1);
 energyi = p(2:end);
 
-TF_conc_t = TF_conc_t(1:5:end);
 
 % all data follow this format:
 % each row: every hour
@@ -24,6 +23,6 @@ end
 
 % now sim_data should be the same dimension as real_data
 
-diff = 1/numel(real_data) *sum((real_data-sim_data).^2,'all');
+diff = sum((real_data(:)-sim_data(:)).^2);
 
 end
