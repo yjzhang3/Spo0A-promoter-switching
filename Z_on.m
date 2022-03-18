@@ -1,4 +1,4 @@
-function Z = Z_on(nbd,energyi,TF_conc,RNAp_conc,mut)
+?function Z = Z_on(nbd,energyi,TF_conc,RNAp_conc,mut)
 % nbd: number of binding site
 % typei: type of each TF (activator > 1, repressor < 1), excluding mRNA
 % each number represents the activating or repressive power, which is just
