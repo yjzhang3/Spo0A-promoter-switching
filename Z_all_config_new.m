@@ -16,4 +16,5 @@ for bb = 1:length(bins)
     Zall = Zall + Z;
 end
 
+Zall = Zall/(2^nbd/2^(sum(mut)+1));
 end
