@@ -6,25 +6,26 @@
 
 %% generate enough data points
 TF_conc_fun = @(x) x^3+300*x;
-tspan = 50;
+tspan = 10;
 TF_conc_t = zeros(tspan,1);
 
 for rr = 1:length(TF_conc_t)
-    TF_conc_t(rr) = TF_conc_fun(rr);
+    TF_conc_t(rr) = TF_conc_fun(rr-1);
 end
+
 
 %% parameters
 nbd = 4;
-energyi = [10,10,10,10,-5,5,20,8,-5,-5];
+energyi = [10,10,10,10,-2,-2,10,3,-5,-10];
 mut_mat = [[1,1,1];[0,1,1];[1,0,1];[1,1,0];[0,0,1];[0,1,0];[0,0,0]];
 RNAp_conc = 500;
 
 real_data = zeros(length(mut_mat),length(TF_conc_t));
 
-lb = zeros(10,1)-20;
+lb = zeros(10,1)-10;
 % lb(5:6) = -0.0001;
 % lb(8) = -0.0001;
-ub = zeros(10,1)+20;
+ub = zeros(10,1)+10;
 % ub(5:6) = 0.0001;
 % ub(8) = 0.0001;
 
@@ -53,7 +54,7 @@ end
 figure();
 for yy = 1:length(mut_mat)
     subplot(4,2,yy)
-    TR = time_dep_TR_new(nbd,x,TF_conc_t,RNAp_conc,mut_mat(yy,:));
+    TR = time_dep_TR_new(nbd,x(8,:),TF_conc_t,RNAp_conc,mut_mat(yy,:));
     plot(TF_conc_t,TR,'LineWidth',4)
     ylim([0 1])
     xlabel('TF concentration')
@@ -61,10 +62,12 @@ for yy = 1:length(mut_mat)
 end
 
 %% preicions, recall, and F1 score
-error =  zeros(10,1); %  error for each iteration
+error = zeros(10,1); %  error for each iteration
+err_m = mean(x); % mean of each column, which is also each type of energy
+err_std = std(x);
 
 for ii = 1:length(x)
-    err = sum(((x(ii,:)-energyi)/energyi)^2)/length(x);
+    err = sum(((x(ii,:)-energyi)./x(ii,:)).^2)/length(x);
     error(ii) = err;
 end
 
