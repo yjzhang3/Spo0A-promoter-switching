@@ -15,7 +15,8 @@ for ll = 1:length(real_data(1,:))
 end
 
 % generate simulated data for all WT and mutated types
-sim_data = zeros(length(mut_mat),length(TF_conc_t));
+sim_data = zeros(length(TF_conc_t),length(mut_mat));
+
 parfor mm = 1:length(mut_mat)
     sim_data(:,mm) = time_dep_TR_new(nbd,energyi,TF_conc_t,RNAp_conc,mut_mat(mm,:));
 end
