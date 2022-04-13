@@ -1,4 +1,4 @@
-function Z = Z_per_config_new(config, energyi,TF_conc,RNAp_conc)
+function Z = Z_per_config_new(config, energyi,TF_conc)
 
 G0 = stand_energy(config,energyi);
 

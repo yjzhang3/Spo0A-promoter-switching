@@ -17,7 +17,7 @@ end
 %% parameters
 nbd = 4;
 energyi = [10,10,10,10,-2,-2,10,3,-5,-10];
-mut_mat = [[1,1,1];[0,1,1];[1,0,1];[1,1,0];[0,0,1];[0,1,0];[0,0,0]];
+mut_mat = [[1,1,1];[0,1,1];[1,0,1];[1,1,0];[0,0,1];[0,1,0];[1,0,0];[0,0,0]];
 RNAp_conc = 500;
 
 real_data = zeros(length(mut_mat),length(TF_conc_t));
@@ -32,7 +32,7 @@ ub = zeros(10,1)+10;
 %% generate real data
 for mm = 1:length(mut_mat)
     subplot(4,2,mm)
-    TR_t = time_dep_TR_new(nbd,energyi,TF_conc_t,RNAp_conc,mut_mat(mm,:));
+    TR_t = time_dep_TR_new(nbd,energyi,TF_conc_t,mut_mat(mm,:));
     real_data(mm,:) = TR_t;
     plot(TF_conc_t,TR_t,'LineWidth',4)
     ylim([0 1])
