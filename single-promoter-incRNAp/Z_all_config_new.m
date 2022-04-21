@@ -1,4 +1,4 @@
-function Zall = Z_all_config_new(nbd,energyi,mut,TF_conc)
+function Zall = Z_all_config_new(nbd,energyi,mut,TF_conc,RNAp_conc)
 
 bins = dec2bin(0:(2^nbd-1), nbd) - '0'; % all possible configurations
 
@@ -12,7 +12,7 @@ end
 Zall = 0;
 for bb = 1:length(bins)
     config = bins(bb,:);
-    Z = Z_per_config_new(config, energyi,TF_conc);
+    Z = Z_per_config_new(config, energyi,TF_conc,RNAp_conc);
     Zall = Zall + Z;
 end
 
