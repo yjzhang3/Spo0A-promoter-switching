@@ -7,5 +7,4 @@ for ii = 1:length(all_data(1,:))
     hold on
 end
 
-%% plot
-plot_data(all_data(:,2))
+
