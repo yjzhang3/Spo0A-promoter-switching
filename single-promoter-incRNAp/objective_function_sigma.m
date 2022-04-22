@@ -3,8 +3,9 @@ function diff = objective_function_sigma(nbd,p,TF_conc_t,mut_RNAp,real_data)
 % specifically) changes with time
 
 % assign parameters 
-energyi = p(1:10);
-RNAp_conc_t = p(11:end);
+energy_len = nbd+nbd*(nbd-1)/2;
+energyi = p(1:energy_len);
+RNAp_conc_t = p(energy_len+1:end);
 
 % all data follow this format:
 % each row: every hour

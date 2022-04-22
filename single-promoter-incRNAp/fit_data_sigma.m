@@ -12,7 +12,8 @@ iter = 5;
 
 fun = @(p) objective_function_sigma(nbd,p,TF_conc_t,mut_RNAp,real_data);
 
-nvars = 16;
+% nvars = 16;
+nvars = 21;
 
 %% particle swarm
 pars_all = zeros(iter,nvars);

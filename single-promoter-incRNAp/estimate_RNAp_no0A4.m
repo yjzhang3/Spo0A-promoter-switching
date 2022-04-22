@@ -49,12 +49,16 @@ ub_overall(11:end) = zeros(length(TF_conc_t),1)+1000000;
 all_mut_data = real_data_Ps(:,end); % the 123* strain
 mut_RNAp = [0,0,0];
 
-%%
+%% find [RNAp] as functino of time first
 [new_pars,diff] = fit_data_sigma(nbd,TF_conc_t,mut_RNAp,all_mut_data,lb_overall,ub_overall);
+
+%% then find energy
+RNAp_conc_t_real = new_pars(11:end);
+energyi_sigma = new_pars(1:10);
+[final_energyi,diff] = fit_data_new(nbd,TF_conc_t,RNAp_conc_t_real,mut_mat,real_data_Ps,lb,ub);
 
 %% now see  how the newe parameters do
 RNAp_conc_t_real = new_pars(11:end);
-energyi = new_pars(1:10);
 
 figure();
 for kk = 1:length(real_data_Ps)
@@ -64,7 +68,7 @@ for kk = 1:length(real_data_Ps)
     ylim([0 1])
     hold on
     
-    TR = time_dep_TR_new_wSigma(nbd,energyi,TF_conc_t,RNAp_conc_t_real,mut_mat(kk,:));
+    TR = time_dep_TR_new_wSigma(nbd,final_energyi,TF_conc_t,RNAp_conc_t_real,mut_mat(kk,:));
     plot(TF_conc_t,TR,'LineWidth',4)
     xlabel('TF concentration')
     ylabel('transcription rate')

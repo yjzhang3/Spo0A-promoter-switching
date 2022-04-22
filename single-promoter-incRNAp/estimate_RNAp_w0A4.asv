@@ -11,7 +11,7 @@ nbd = 5;
 mut_mat = [[1,1,1];[0,1,1];[1,0,1];[1,1,0];[0,0,1];[0,1,0];[0,0,1];[0,0,0]];
 energy_len = nbd+nbd*(nbd-1)/2;
 
-%% bounds
+%% 
 
 lb = zeros(energy_len,1)-20;
 ub = zeros(energy_len,1)+15;
@@ -34,10 +34,6 @@ ub(9) = 10; % but not a super strong repressor
 %% fit 123*  data
 % treat both eenergies and RNAp as unknowns
 
-for ll = 1:length(real_data_Ps(1,:))
-    real_data_Ps(:,ll) = real_data_Ps(:,ll)./max(real_data_Ps(:,ll));
-end
-
 lb_overall = zeros(energy_len+6,1);
 ub_overall = zeros(energy_len+6,1);
 lb_overall(1:energy_len) = lb;
@@ -52,14 +48,15 @@ mut_RNAp = [0,0,0];
 %% find [RNAp] first
 [new_pars,diff] = fit_data_sigma(nbd,TF_conc_t,mut_RNAp,all_mut_data,lb_overall,ub_overall);
 
-% %% then find energy
-% RNAp_conc_t_real = new_pars(energy_len+1:end);
-% energyi_sigma = new_pars(1:energy_len);
-% [final_energyi,diff] = fit_data_new(nbd,TF_conc_t,RNAp_conc_t_real,mut_mat,real_data_Ps,lb,ub);
+%% then find energy
+RNAp_conc_t_real = new_pars(energy_len+1:end);
+energyi_sigma = new_pars(1:energy_len);
+[final_energyi,diff] = fit_data_new(nbd,TF_conc_t,RNAp_conc_t_real,mut_mat,real_data_Ps,lb,ub);
+
 
 %% now see  how the newe parameters do
-RNAp_conc_t_real = new_pars(energy_len+1:end);
-sigma_energyi = new_pars(1:energy_len);
+RNAp_conc_t_real = new_pars(11:end);
+energyi = new_pars(1:10);
 
 figure();
 for kk = 1:length(real_data_Ps)
@@ -69,7 +66,7 @@ for kk = 1:length(real_data_Ps)
     ylim([0 1])
     hold on
     
-    TR = time_dep_TR_new_wSigma(nbd,sigma_energyi,TF_conc_t,RNAp_conc_t_real,mut_mat(kk,:));
+    TR = time_dep_TR_new_wSigma(nbd,energyi,TF_conc_t,RNAp_conc_t_real,mut_mat(kk,:));
     plot(TF_conc_t,TR,'LineWidth',4)
     xlabel('TF concentration')
     ylabel('transcription rate')
