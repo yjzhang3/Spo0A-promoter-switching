@@ -8,8 +8,10 @@
 load('promoter_activity_single.mat')
 load('Spo0A_dynamics.mat')
 
+real_data = Ps_promoter_activity_mean(2:7,1:8); % exclude the real WT, instead WT is Ps only, no mutations
+
 %% parameters
-real_data_Ps = Ps_promoter_activity_mean(2:7,1:8); % exclude the real WT, instead WT is Ps only, no mutations
+real_data = Ps_promoter_activity_mean(2:7,1:8); % exclude the real WT, instead WT is Ps only, no mutations
 mut_mat = [[1,1,1];[0,1,1];[1,0,1];[1,1,0];[0,0,1];[0,1,0];[0,0,1];[0,0,0]];
 
 nbd = 5;
@@ -37,14 +39,14 @@ lb(9) = 5; % make one of them necessarily a repressor
 ub(9) = 10; % but not a super strong repressor
 
 % normalize the real data
-for ll = 1:length(real_data_Ps(1,:))
-    real_data_Ps(:,ll) = real_data_Ps(:,ll)./max(real_data_Ps(:,ll));
+for ll = 1:length(real_data(1,:))
+    real_data(:,ll) = real_data(:,ll)./max(real_data(:,ll));
 end
 
 figure();
 for kk = 1:length(mut_mat)
     subplot(4,2,kk)
-    plot(TF_conc_t,real_data_Ps(:,kk),'o','LineWidth',2)
+    plot(TF_conc_t,real_data(:,kk),'o','LineWidth',2)
     ylim([0 1])
     xlabel('TF concentration')
     ylabel('transcription rate')
@@ -52,20 +54,20 @@ for kk = 1:length(mut_mat)
 end
 
 %%
-[pars,diff] = fit_data(nbd,TF_conc_t,mut_mat,real_data_Ps,lb,ub);
+[pars,diff] = fit_data(nbd,TF_conc_t,mut_mat,real_data,lb,ub);
 [M,I] = min(diff);
 %% figures
 
 % normalize the real data
-for ll = 1:length(real_data_Ps(1,:))
-    real_data_Ps(:,ll) = real_data_Ps(:,ll)./max(real_data_Ps(:,ll));
+for ll = 1:length(real_data(1,:))
+    real_data(:,ll) = real_data(:,ll)./max(real_data(:,ll));
 end
 
 figure();
 for kk = 1:length(mut_mat)
     subplot(4,2,kk)
     
-    plot(TF_conc_t,real_data_Ps(:,kk),'o','LineWidth',4)
+    plot(TF_conc_t,real_data(:,kk),'o','LineWidth',4)
     ylim([0 1])
     hold on
     
