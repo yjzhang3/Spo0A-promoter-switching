@@ -1,6 +1,6 @@
 function [pars,M] = fit_data_new(nbd,TF_conc_t,RNAp_conc_t,mut_mat,real_data,lb,ub)
 % input: real data, time dependent TF concentration, number of binding
-% sites, RNAP concentration, mutation matrix
+% sites, time-dependent RNAP concentration, mutation matrix
 
 % can also specify lower and upper bound
 
@@ -8,11 +8,11 @@ function [pars,M] = fit_data_new(nbd,TF_conc_t,RNAp_conc_t,mut_mat,real_data,lb,
 
 %% parameters
 rng default
-iter = 10;
+iter = 4;
 
 fun = @(p) objective_function_new(nbd,p,TF_conc_t,RNAp_conc_t,mut_mat,real_data);
 
-nvars = 10;
+nvars = 11; % if only 3 binding boxes are included 
 
 %% particle swarm
 pars_all = zeros(iter,nvars);

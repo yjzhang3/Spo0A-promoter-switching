@@ -1,4 +1,4 @@
-function p_on = transcription_rate_new(nbd,energyi,mut,TF_conc,RNAp_conc)
+function TR = transcription_rate_new(nbd,energyi,mut,TF_conc,RNAp_conc,vmax)
 
 bins = dec2bin(0:(2^nbd-1), nbd) - '0';
 on_config = bins(bins(:,end)==1,:);
@@ -17,5 +17,6 @@ for oo = 1:length(on_config)
 end
 
 p_on = p_on/(2^(nbd-1-sum(mut)));
+TR = vmax*p_on; % this is to assume that every ON state has the same maximum transcription rate
 
 end

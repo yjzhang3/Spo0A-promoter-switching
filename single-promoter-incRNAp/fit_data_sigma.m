@@ -1,27 +1,31 @@
-function [pars,M] = fit_data_sigma(nbd,TF_conc_t,mut_RNAp,real_data,lb,ub)
+function [pars,M] = fit_data_sigma(nbd,energyi,TF_conc_t,mut_RNAp,real_data)
 % input: real data, time dependent TF concentration, number of binding
 % sites, mutation type for 123*
 
-% can also specify lower and upper bound
+% will not specify lower and upper bound because it's hard to know
 
-% time-dependent [RNAp] and energyi is the parameter to find for
+% time-dependent [RNAp] is the parameter to find for
+
+% we can just let all energies being 1 and let [RNAP] cinlude the promoter
+% energy. 
 
 %% parameters
 rng default
 iter = 5;
+lb = zeros(7,1);
+ub = zeros(7,1)+100000;
 
-fun = @(p) objective_function_sigma(nbd,p,TF_conc_t,mut_RNAp,real_data);
+fun = @(p) objective_function_sigma(nbd,energyi,TF_conc_t,p,mut_RNAp,real_data);
 
-% nvars = 16;
-nvars = 21;
+nvars = 7;
 
 %% particle swarm
 pars_all = zeros(iter,nvars);
 diff_all = zeros(iter,1);
 for n = 1:iter
-    x = particleswarm(fun,nvars,lb,ub);
+    [x,fval,~,~] = particleswarm(fun,nvars,lb,ub);
     pars_all(n,:) = x;
-    diff_all(n) = fun(x);
+    diff_all(n) = fval;
 end
 
 [M,I] = min(diff_all);
