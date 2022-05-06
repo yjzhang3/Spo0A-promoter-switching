@@ -3,7 +3,7 @@ diff = zeros(length(real),1);
 
 for jj = 1:length(fake)
     d = (fake(jj)-real(jj))^2;
-    df = d/real(jj);
+    df = d/real(jj)^2;
     diff(jj) = df;
 end
 

@@ -12,12 +12,13 @@ function [pars,M] = fit_data_sigma(nbd,energyi,TF_conc_t,mut_RNAp,real_data)
 %% parameters
 rng default
 iter = 5;
-lb = zeros(7,1);
-ub = zeros(7,1)+100000;
+n_pars = length(TF_conc_t)+1;
+lb = zeros(n_pars,1);
+ub = zeros(n_pars,1)+100000;
 
 fun = @(p) objective_function_sigma(nbd,energyi,TF_conc_t,p,mut_RNAp,real_data);
 
-nvars = 7;
+nvars = n_pars;
 
 %% particle swarm
 pars_all = zeros(iter,nvars);
