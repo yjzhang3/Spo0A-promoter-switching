@@ -62,7 +62,8 @@ vmax = pars(end);
 figure();
 plot(TF_conc_t,mut_123_data,'o','LineWidth',3.5)
 hold on
-plot(TF_conc_t,time_dep_TR_new_wSigma(nbd,energyi_sigma,TF_conc_t,A_conc_t,mut_123,vmax),'LineWidth',3.5)
+plot(TF_conc_t,time_dep_TR_new_wSigma(nbd,energyi_sigma,TF_conc_t,RNAp_conc_t,mut_123,vmax),'LineWidth',3.5)
 xlabel('[Spo0A]')
 ylabel('Promoter Activity')
 title(titlen)
+

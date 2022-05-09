@@ -37,8 +37,8 @@ mut_mat = [[1,1,1];[0,1,1];[1,0,1];[1,1,0];[0,0,1];[0,1,0];[0,0,1];[0,0,0]];
 
 %% set up bounds for energy
 
-lb_overall = zeros(11,1)-20;
-ub_overall = zeros(11,1)+20;
+lb_overall = zeros(10,1)-20;
+ub_overall = zeros(10,1)+20;
 
 % lb_overall(1:3) = 1; % binding affinity of each site > 1 (nonzero and greater than promoter affinity)
 % lb_overall(7) = 5; % must have one repressor
@@ -47,8 +47,8 @@ lb_overall(4) = 0;
 ub_overall(4) = 0; % keep promoter energy fixed because we know it's embedded in concentration terms
 
 % vmax should be positive
-lb_overall(end) = 0;
-ub_overall(end) = 10000;
+lb_overall(11:end) = 0;
+ub_overall(11:end) = 10000;
 
 %% index smaller dataset
     
@@ -61,8 +61,8 @@ real_data_new = real_data(:,ind);
 [pars,diff] = fit_data(nbd,TF_conc_t,RNAp_conc_t,mut_mat_new,real_data_new,lb_overall,ub_overall,n_strain);
 
 %%
-final_energyi = pars(1:(end-1));
-final_vmax = pars(end);
+final_energyi = pars(1:10);
+final_vmax = pars(11:end);
 
 %% now see how the newer parameters do
 figure();
