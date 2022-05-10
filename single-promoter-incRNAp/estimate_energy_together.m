@@ -69,12 +69,13 @@ for kk = 1:length(inds)
     title(string(title_name(inds(kk))))
 end
 %% Pv promoter
+clear kk
 title_name = {'Ps','1*','2*','3*','12*','13*','23*','123*'};
 figure();
 for kk = 1:length(indv)
     subplot(4,2,kk)
     
-    errorbar(TF_conc_t,real_data_Ps(:,indv(kk)),real_data_Ps_std(:,indv(kk)),'LineWidth',4)
+    errorbar(TF_conc_t,real_data_Pv(:,indv(kk)),real_data_Pv_std(:,indv(kk)),'LineWidth',4)
     hold on
     
     TR = time_dep_TR_new_wSigma(nbd,energyi_v,TF_conc_t,A_conc_t,mut_mat(indv(kk),:),vmax_v);

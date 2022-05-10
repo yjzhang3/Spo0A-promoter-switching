@@ -23,12 +23,12 @@ vmax_v = vmax((2^(nbd-1)+1):(2*2^(nbd-1)));
 % generate simulated data for all WT and mutated type
 
     
-for mm = 1:n_strains
+parfor mm = 1:n_strains
     sim_data_s(:,mm) = time_dep_TR_new_wSigma(nbd,energyi_s,TF_conc_t,H_conc_t,mut_mats(mm,:),vmax_s);
 end
 
-for nn = 1:n_strainv
-    sim_data_v(:,nn) = time_dep_TR_new_wSigma(nbd,energyi_v,TF_conc_t,A_conc_t,mut_matv(mm,:),vmax_v);
+parfor nn = 1:n_strainv
+    sim_data_v(:,nn) = time_dep_TR_new_wSigma(nbd,energyi_v,TF_conc_t,A_conc_t,mut_matv(nn,:),vmax_v);
 end
 
 sim_data = [sim_data_s;sim_data_v];

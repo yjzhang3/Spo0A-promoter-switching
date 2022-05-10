@@ -25,6 +25,7 @@ for n = 1:iter
     [x,fval,~,~] = particleswarm(fun,nvars,lb,ub);
     pars_all(n,:) = x;
     diff_all(n) = fval;
+    create_parameter_file('pars_together.txt', x, fval)
 end
 
 [M,I] = min(diff_all);

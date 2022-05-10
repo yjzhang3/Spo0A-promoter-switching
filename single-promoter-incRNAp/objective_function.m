@@ -17,7 +17,7 @@ vmax = p(11:end);
 
 if n_strain > 1
     sim_data = zeros(length(TF_conc_t),n_strain);
-    for mm = 1:n_strain
+    parfor mm = 1:n_strain
         sim_data(:,mm) = time_dep_TR_new_wSigma(nbd,energyi,TF_conc_t,RNAp_conc_t,mut_mat(mm,:),vmax);
     end
 end
