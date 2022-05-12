@@ -50,8 +50,8 @@ mut_123 = [0,0,0];
 %% find [RNAp] as functino of time first
 [pars,diff] = fit_data_sigma(nbd,energyi_sigma,TF_conc_t,mut_123,mut_123_data);
 
-RNAp_conc_t = pars(1:end-1);
-vmax = pars(end);
+RNAp_conc_t = pars(1:length(TF_conc_t));
+vmax = pars(length(TF_conc_t)+1:end);
 % the array sigma_conc_t is the time-dependent parameter that incorporates
 % [RNAp] and promoter binding affinity. So later when we apply this array
 % to all mutation strains, can just let promoter energy be 0 always (keep
