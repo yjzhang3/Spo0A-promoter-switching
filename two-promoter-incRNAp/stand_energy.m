@@ -21,12 +21,14 @@ G0 = sum(config.*energy_per_site, 'all' );
 % if a pair doesn't interact, then the energy is 0
 
 count = 0; % count the number of unique pairs
+int_e = 0;
 for ii = 1:nbd-1
     for jj = ii+1:nbd
         count = count+1;
-        G0 = G0 + config(ii)*config(jj)*int_energy_per_pair(count);
+        int_e = int_e + config(ii)*config(jj)*int_energy_per_pair(count);
     end
 end
+G0 = G0+int_e;
 
 end
 

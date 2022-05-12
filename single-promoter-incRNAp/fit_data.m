@@ -1,4 +1,4 @@
-function [pars,M] = fit_data(nbd,TF_conc_t,RNAp_conc_t,mut_mat,real_data,lb,ub,n_strain)
+function [pars,M] = fit_data(nbd,TF_conc_t,RNAp_conc_t,mut_mat,real_data,lb,ub,n_strain,file)
 % input: real data, time dependent TF concentration, number of binding
 % sites, time-dependent RNAP concentration, mutation matrix
 
@@ -25,6 +25,7 @@ for n = 1:iter
     [x,fval,~,~] = particleswarm(fun,nvars,lb,ub);
     pars_all(n,:) = x;
     diff_all(n) = fval;
+    create_parameter_file(file, x, fval);
 end
 
 [M,I] = min(diff_all);

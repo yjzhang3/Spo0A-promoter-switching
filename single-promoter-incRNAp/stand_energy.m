@@ -28,7 +28,7 @@ for ii = 1:nbd-1
         int_e = int_e + config(ii)*config(jj)*int_energy_per_pair(count);
     end
 end
-G0 = G0-int_e;
+G0 = G0+int_e;
 
 end
 

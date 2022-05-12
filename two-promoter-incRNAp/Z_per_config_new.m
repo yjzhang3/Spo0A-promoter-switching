@@ -10,7 +10,6 @@ num_RNAp = num_arr(end);
 conc_TF = conc_arr(1);
 conc_RNAp = conc_arr(end);
 
-
 Z = exp(-G0)*(conc_TF^num_TF)*(conc_RNAp^num_RNAp);
 
 end
