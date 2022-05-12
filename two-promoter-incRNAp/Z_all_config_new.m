@@ -1,4 +1,4 @@
-function Zall = Z_all_config_new(nbd,energyi,mut,TF_conc,RNAp_conc)
+function Zall = Z_all_config_new(nbd,energyi,mut,TF_conc,RNApH_conc,RNApA_conc)
 
 bins = dec2bin(0:(2^nbd-1), nbd) - '0'; % all possible configurations
 
@@ -12,11 +12,11 @@ end
 Zall = 0;
 for bb = 1:length(bins)
     config = bins(bb,:);
-    Z = Z_per_config_new(config, energyi,TF_conc,RNAp_conc);
+    Z = Z_per_config_new(config, energyi,TF_conc,RNApH_conc,RNApA_conc);
     Zall = Zall + Z;
 end
 
-Zall = Zall/2^(nbd-1-sum(mut));
+Zall = Zall/2^(3-sum(mut));
 % divide by 2^(number of mutations), where number of mutations is 
 % nbd-1-sum(mut), becauase nbd-1 is the number of binding sites besides the
 % promoter, and sum(mut) is the number of non-mutated sites

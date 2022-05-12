@@ -1,14 +1,13 @@
 function plot_raw_data(ii)
 
 load('promoter_activity_single.mat')
-load('Spo0A_dynamics.mat')
 
-real_data_Ps = Ps_promoter_activity_mean(2:7,2:9); % exclude the real WT, instead WT is Ps only, no mutations
-real_data_Ps_std = Ps_promoter_activity_std(2:7,2:9);
-real_data_Pv = Pv_promoter_activity_mean(2:7,2:9);
-real_data_Pv_std = Pv_promoter_activity_std(2:7,2:9);
+real_data_Ps = Ps_promoter_activity_mean(:,2:9); % exclude the real WT, instead WT is Ps only, no mutations
+real_data_Ps_std = Ps_promoter_activity_std(:,2:9);
+real_data_Pv = Pv_promoter_activity_mean(:,2:9);
+real_data_Pv_std = Pv_promoter_activity_std(:,2:9);
 
-wta = wtaCopy(1:6:end);
+wta = get_aps(2:10);
 
 if ii == 'v'
     real_data = real_data_Pv;
