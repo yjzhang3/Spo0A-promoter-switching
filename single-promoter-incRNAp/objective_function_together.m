@@ -7,11 +7,20 @@ function diff = objective_function_together(nbd,p,TF_conc_t,H_conc_t,A_conc_t,mu
 % assign parameters (RNAp is not independent of energies, so it's not a
 % parameter to optimize)
 single_energyi = p(1:4);
-int_energyi = p(5:16);
-vmax = p(17:end);
+TF_int_energyi = p(5:7);
+Ps_int_energyi = p(8:10);
+Pv_int_energyi = p(11:13);
+vmax = p(14:end);
 
-energyi_s = [single_energyi,int_energyi(1:6)];
-energyi_v = [single_energyi,int_energyi(7:12)];
+energyi_s = zeors(10,1);
+energyi_s(1:4) = single_energyi;
+energyi_s([5,6,8]) = TF_int_energyi;
+energyi_s([7,9,10]) = Ps_int_energyi;
+
+energyi_v = zeors(10,1);
+energyi_v(1:4) = single_energyi;
+energyi_v([5,6,8]) = TF_int_energyi;
+energyi_v([7,9,10]) = Pv_int_energyi;
 
 vmax_s = vmax(1:(2^(nbd-1)));
 vmax_v = vmax((2^(nbd-1)+1):(2*2^(nbd-1)));

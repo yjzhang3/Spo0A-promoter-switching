@@ -50,6 +50,7 @@ mut_123 = [0,0,0];
 %% find [RNAp] as functino of time first
 [pars,diff] = fit_data_sigma(nbd,energyi_sigma,TF_conc_t,mut_123,mut_123_data);
 
+
 RNAp_conc_t = pars(1:length(TF_conc_t));
 vmax = pars(length(TF_conc_t)+1:end);
 % the array sigma_conc_t is the time-dependent parameter that incorporates
@@ -62,7 +63,7 @@ vmax = pars(length(TF_conc_t)+1:end);
 figure();
 plot(TF_conc_t,mut_123_data,'o','LineWidth',3.5)
 hold on
-plot(TF_conc_t,time_dep_TR_new_wSigma(nbd,energyi_sigma,TF_conc_t,RNAp_conc_t,mut_123,vmax),'LineWidth',3.5)
+plot(TF_conc_t,time_dep_TR_new_wSigma(nbd,energyi_sigma,TF_conc_t,H_conc_t,mut_123,vmax),'LineWidth',3.5)
 xlabel('[Spo0A]')
 ylabel('Promoter Activity')
 title(titlen)

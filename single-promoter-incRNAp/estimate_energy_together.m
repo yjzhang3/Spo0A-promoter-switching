@@ -1,4 +1,4 @@
-function [pars,diff] = estimate_energy_together(n_strains,n_strainv,inds,indv)
+function [pars,diff] = estimate_energy_together(n_strains,n_strainv,inds,indv,filename)
 %% this file finds the energy for smaller set of data
 %% load data and choose strains
 % ii tells us Pv or Ps
@@ -23,8 +23,8 @@ mut_mat = [[1,1,1];[0,1,1];[1,0,1];[1,1,0];[0,0,1];[0,1,0];[0,0,1];[0,0,0]];
 
 %% set up bounds for energy
 
-lb_overall = zeros(32,1)-20;
-ub_overall = zeros(32,1)+20;
+lb_overall = zeros(29,1)-20;
+ub_overall = zeros(29,1)+20;
 
 % lb_overall(1:3) = 1; % binding affinity of each site > 1 (nonzero and greater than promoter affinity)
 % lb_overall(7) = 5; % must have one repressor
@@ -33,8 +33,8 @@ lb_overall(4) = 0;
 ub_overall(4) = 0; % keep promoter energy fixed because we know it's embedded in concentration terms
 
 % vmax should be positive
-lb_overall(17:end) = 0;
-ub_overall(17:end) = 10000;
+lb_overall(14:end) = 0;
+ub_overall(14:end) = 10000;
 
 %% index smaller dataset
     
@@ -48,10 +48,10 @@ real_data_new_v = real_data_Pv(:,indv);
 [pars,diff] = fit_data_together(nbd,TF_conc_t,H_conc_t,A_conc_t,mut_mat_new_s,mut_mat_new_v,real_data_new_s,real_data_new_v,lb_overall,ub_overall,n_strains,n_strainv);
 
 %%
-energyi_s = pars(1:10);
-energyi_v = pars([1:4,11:16]);
-vmax_s = pars(17:24);
-vmax_v = pars(25:32);
+energyi_s = pars([1:4,5,6,8,7,9,10]);
+energyi_v = pars([1:4,5,6,11,7,12,13]);
+vmax_s = pars(14:21);
+vmax_v = pars(22:29);
 
 %% Ps promoter
 title_name = {'Pv','1*4*','2*4*','3*4*','124*','134*','234*','1234*'};

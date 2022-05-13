@@ -37,8 +37,8 @@ mut_mat = [[1,1,1];[0,1,1];[1,0,1];[1,1,0];[0,0,1];[0,1,0];[0,0,1];[0,0,0]];
 
 %% set up bounds for energy
 
-lb_overall = zeros(10,1)-20;
-ub_overall = zeros(10,1)+20;
+lb_overall = zeros(18,1)-20;
+ub_overall = zeros(18,1)+20;
 
 % lb_overall(1:3) = 1; % binding affinity of each site > 1 (nonzero and greater than promoter affinity)
 % lb_overall(7) = 5; % must have one repressor
@@ -79,7 +79,7 @@ for kk = 1:length(ind)
     xlabel('TF concentration')
     ylabel('transcription rate')
     
-    ylim([0 600])
+    ylim([0 900])
     title(string(title_name(ind(kk))))
 end
 
