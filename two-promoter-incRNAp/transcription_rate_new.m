@@ -14,14 +14,13 @@ on_config = on_config(on_ind,:); % now we don't know what are
 % if any configuration is unlikely to exist, then give that configuration
 % vmax = 0
 
+for gg = 1:length(on_config)
+    str = string(on_config(gg,:));
+    curr_config = append(str(1),str(2),str(3),str(4),str(5));
+    keyset{gg} = convertStringsToChars(curr_config);
+end
 
-% for gg = 1:length(bins)
-%     str = string(bins(gg,:));
-%     curr_config = append(str(1),str(2),str(3),str(4),str(5));
-%     keyset{gg} = convertStringsToChars(curr_config);
-% end
-
-% M = containers.Map(keyset,vmax);
+M = containers.Map(keyset,vmax);
 
 % consider mutated sites
 for ss = 1:length(mut)
@@ -32,15 +31,16 @@ end
 
 TR = 0;
 for oo = 1:length(on_config)
-%     str = string(bins(oo,:));
-%     curr_config = convertStringsToChars(str(1),str(2),str(3),str(4),str(5));
-%     vmax = M(curr_config);
-%     curr_tr = vmax*prob_per_config_new(nbd,bins(oo,:),energyi,mut,TF_conc,RNApH_conc,RNApA_conc);
-    curr_tr = prob_per_config_new(nbd,on_config(oo,:),energyi,mut,TF_conc,RNApH_conc,RNApA_conc);
+    str = string(on_config(oo,:));
+    curr_config = append(str(1),str(2),str(3),str(4),str(5));
+    curr_conf = convertStringsToChars(curr_config);
+    curr_vmax = M(curr_conf);
+    curr_tr = curr_vmax*prob_per_config_new(nbd,on_config(oo,:),energyi,mut,TF_conc,RNApH_conc,RNApA_conc);
+%     curr_tr = prob_per_config_new(nbd,on_config(oo,:),energyi,mut,TF_conc,RNApH_conc,RNApA_conc);
     TR = TR + curr_tr;
 end
 
-% TR = TR/(2^(3-sum(mut)));
-TR = vmax*TR/(2^(3-sum(mut)));
+TR = TR/(2^(3-sum(mut)));
+% TR = vmax*TR/(2^(3-sum(mut)));
 
 end

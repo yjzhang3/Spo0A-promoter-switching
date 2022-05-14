@@ -1,3 +1,5 @@
+%% this file just picks a random energy array and a fixed vamx to test if
+% transcription rate is calculated successfully 
 load('A_conc_t_reasonable.mat', 'A_conc_t')
 load('H_conc_t_reasonable.mat', 'H_conc_t')
 
@@ -10,4 +12,6 @@ mut_mat = [[1,1,1];[0,1,1];[1,0,1];[1,1,0];[0,0,1];[0,1,0];[0,0,1];[0,0,0]];
 vmax = 450;
 
 %%
-TR_overall = time_dep_TR_new_wSigma(nbd,energyi,TF_conc_t,RNAp_conc_t_Ps,RNAp_conc_t_Pv,mut_mat(3,:),vmax);
+
+
+TR_overall = time_dep_TR_new_wSigma(nbd,energyi,TF_conc_t,RNAp_conc_t_Ps,RNAp_conc_t_Pv,mut_mat(1,:),vmax);
