@@ -6,10 +6,8 @@ for tt = 1:length(TF_conc_t)
     TR_overall(tt) = transcription_rate_new(nbd,energyi,mut,TF_conc_t(tt),RNApH_conc_t(tt),RNApA_conc_t(tt),vmax);
 end
 
-figure();
 plot(TF_conc_t,TR_overall,'LineWidth',5)
-hold on
-xlabel('time')
+xlabel('TF')
 ylabel('transcription rate')
 set(gca,'FontSize',17)
 end

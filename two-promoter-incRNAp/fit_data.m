@@ -10,7 +10,7 @@ function [pars,M] = fit_data(nbd,TF_conc_t,RNApH_conc_t,RNApA_conc_t,mut_mat,rea
 
 %% parameters
 rng default
-iter = 4;
+iter = 8;
 
 fun = @(p) objective_function(nbd,p,TF_conc_t,RNApH_conc_t,RNApA_conc_t,mut_mat,real_data,n_strain);
 

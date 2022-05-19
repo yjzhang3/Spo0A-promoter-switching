@@ -37,12 +37,16 @@ ub_overall = zeros(39,1)+20;
 lb_overall(4:5) = 0;
 ub_overall(4:5) = 0; % keep promoter energy fixed because we know it's embedded in concentration terms
 
-lb_overall(7) = 0;
-ub_overall(7) = 0; % TF bound at 0A1 and 3 probably won't have interaction energy
+% lb_overall(7) = 0;
+% ub_overall(7) = 0; % TF bound at 0A1 and 3 probably won't have interaction energy
 
 % vmax should be positive
 lb_overall(16:end) = 0;
 ub_overall(16:end) = 100000;
+
+% vmax0_ind = 15+[3,4,6,9,12:18,20,21,23,24];
+% 
+% ub_overall(vmax0_ind) = 0;
 
 %% index smaller dataset
     
@@ -60,6 +64,7 @@ final_vmax = pars(16:end);
 figure();
 for kk = 1:length(ind)
     subplot(4,2,kk)
+%     figure();
     
     errorbar(TF_conc_t,real_data(:,ind(kk)),real_data_std(:,ind(kk)),'LineStyle','none','LineWidth',2)
     hold on
@@ -69,7 +74,7 @@ for kk = 1:length(ind)
     xlabel('TF concentration')
     ylabel('transcription rate')
     
-    ylim([0 1200])
+    ylim([0 1000])
     title(string(title_name(ind(kk))))
 end
 % 
