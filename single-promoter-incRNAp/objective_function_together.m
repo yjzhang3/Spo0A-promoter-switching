@@ -12,12 +12,12 @@ Ps_int_energyi = p(8:10);
 Pv_int_energyi = p(11:13);
 vmax = p(14:end);
 
-energyi_s = zeors(10,1);
+energyi_s = zeros(10,1);
 energyi_s(1:4) = single_energyi;
 energyi_s([5,6,8]) = TF_int_energyi;
 energyi_s([7,9,10]) = Ps_int_energyi;
 
-energyi_v = zeors(10,1);
+energyi_v = zeros(10,1);
 energyi_v(1:4) = single_energyi;
 energyi_v([5,6,8]) = TF_int_energyi;
 energyi_v([7,9,10]) = Pv_int_energyi;

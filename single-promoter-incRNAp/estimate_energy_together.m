@@ -1,5 +1,5 @@
-function [pars,diff] = estimate_energy_together(n_strains,n_strainv,inds,indv,filename)
-%% this file finds the energy for smaller set of data
+function estimate_energy_together(inds,indv,n_strains,n_strainv,filename)
+%% this file finds the energy for smaller set of data for *both* promoters
 %% load data and choose strains
 % ii tells us Pv or Ps
 % n_strain tell us the number of strains to fit with
@@ -7,8 +7,8 @@ function [pars,diff] = estimate_energy_together(n_strains,n_strainv,inds,indv,fi
 
 load('promoter_activity_single.mat')
 
-load('sigmaA_conc_t.mat', 'A_conc_t')
-load('sigmaH_conc_t.mat','H_conc_t')
+load('H_conc_t_reasonable.mat', 'H_conc_t')
+load('A_conc_t_reasonable.mat','A_conc_t')
 
 real_data_Ps = Ps_promoter_activity_mean(:,2:9); % exclude the real WT, instead WT is Ps only, no mutations
 real_data_Ps_std = Ps_promoter_activity_std(:,2:9);
@@ -45,7 +45,7 @@ real_data_new_s = real_data_Ps(:,inds);
 real_data_new_v = real_data_Pv(:,indv);
 %% start to fit data
 
-[pars,diff] = fit_data_together(nbd,TF_conc_t,H_conc_t,A_conc_t,mut_mat_new_s,mut_mat_new_v,real_data_new_s,real_data_new_v,lb_overall,ub_overall,n_strains,n_strainv);
+[pars,diff] = fit_data_together(nbd,TF_conc_t,H_conc_t,A_conc_t,mut_mat_new_s,mut_mat_new_v,real_data_new_s,real_data_new_v,lb_overall,ub_overall,n_strains,n_strainv,filename);
 
 %%
 energyi_s = pars([1:4,5,6,8,7,9,10]);
@@ -54,32 +54,33 @@ vmax_s = pars(14:21);
 vmax_v = pars(22:29);
 
 %% Ps promoter
-title_name = {'Pv','1*4*','2*4*','3*4*','124*','134*','234*','1234*'};
+title_name = {'Ps','1*','2*','3*','12*','13*','23*','123*'};
+
 figure();
 for kk = 1:length(inds)
     subplot(4,2,kk)
     
-    errorbar(TF_conc_t,real_data_Ps(:,inds(kk)),real_data_Ps_std(:,inds(kk)),'LineWidth',4)
+    errorbar(TF_conc_t,real_data_Ps(:,inds(kk)),real_data_Ps_std(:,inds(kk)),'LineStyle','none')
     hold on
     
     TR = time_dep_TR_new_wSigma(nbd,energyi_s,TF_conc_t,H_conc_t,mut_mat(inds(kk),:),vmax_s);
-    plot(TF_conc_t,TR,'+','LineWidth',2)
+    plot(TF_conc_t,TR,'LineWidth',2)
     xlabel('TF concentration')
     ylabel('transcription rate')
     title(string(title_name(inds(kk))))
 end
 %% Pv promoter
 clear kk
-title_name = {'Ps','1*','2*','3*','12*','13*','23*','123*'};
+title_name = {'Pv','1*4*','2*4*','3*4*','124*','134*','234*','1234*'};
 figure();
 for kk = 1:length(indv)
     subplot(4,2,kk)
     
-    errorbar(TF_conc_t,real_data_Pv(:,indv(kk)),real_data_Pv_std(:,indv(kk)),'LineWidth',4)
+    errorbar(TF_conc_t,real_data_Pv(:,indv(kk)),real_data_Pv_std(:,indv(kk)),'LineWidth',2,'LineStyle','none')
     hold on
     
     TR = time_dep_TR_new_wSigma(nbd,energyi_v,TF_conc_t,A_conc_t,mut_mat(indv(kk),:),vmax_v);
-    plot(TF_conc_t,TR,'+','LineWidth',2)
+    plot(TF_conc_t,TR,'LineWidth',2)
     xlabel('TF concentration')
     ylabel('transcription rate')
     title(string(title_name(indv(kk))))
