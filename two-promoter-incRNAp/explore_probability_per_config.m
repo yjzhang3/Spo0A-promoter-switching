@@ -98,10 +98,10 @@ for cc = 1:length(on_config)
 end
 
 %% extract those with non-zero probability
-mean_prob = mean(prob_t_all');
-mean_TR  = mean(TR_t_all');
+mean_prob = max(prob_t_all');
+mean_TR  = max(TR_t_all');
 ind0_prob = find(mean_prob > 0.1);
-ind0_TR = find(mean_TR > 100);
+ind0_TR = find(mean_TR > 50);
 ind0_final = intersect(ind0_prob,ind0_TR);
 
 %%
