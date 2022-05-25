@@ -10,11 +10,11 @@ function [pars,M] = fit_data_together(nbd,TF_conc_t,H_conc_t,A_conc_t,mut_mats,m
 
 %% parameters
 rng default
-iter = 4;
+iter = 8;
 
 fun = @(p) objective_function_together(nbd,p,TF_conc_t,H_conc_t,A_conc_t,mut_mats,mut_matv,real_datas,real_datav,n_strains,n_strainv);
 % nvars = 10+8; % if only 3 binding boxes are included 
-nvars = 10+3+8+8;
+nvars = 10+4+8+8;
 
 % energy of each binding site and vmax of each configuration
 

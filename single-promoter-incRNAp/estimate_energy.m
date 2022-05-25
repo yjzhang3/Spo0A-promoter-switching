@@ -1,9 +1,11 @@
-function [pars,diff] = estimate_energy(ii,n_strain,ind,file)
+function [pars,diff] = estimate_energy(ii,n_strain,ind,file,group_array)
 %% this file finds the energy for smaller set of data
 %% load data and choose strains
 % ii tells us Pv or Ps
 % n_strain tell us the number of strains to fit with
 % ind tells us which strain to fit
+
+% energyi = 1,2,3,p,12,13,1p,23,2p,3p
 
 load('promoter_activity_single.mat')
 
@@ -33,12 +35,14 @@ titlename = title_name(ind);
 
 %% assign parameters
 nbd = 4;
-mut_mat = [[1,1,1];[0,1,1];[1,0,1];[1,1,0];[0,0,1];[0,1,0];[0,0,1];[0,0,0]];
+mut_mat = [[1,1,1];[0,1,1];[1,0,1];[1,1,0];[0,0,1];[0,1,0];[0,0,1];[0,0,0]]; 
 
 %% set up bounds for energy
 
-lb_overall = zeros(18,1)-20;
-ub_overall = zeros(18,1)+20;
+n_vars = 10+numel(fieldnames(group_array));
+
+lb_overall = zeros(n_vars,1)-30;
+ub_overall = zeros(n_vars,1)+20;
 
 % lb_overall(1:3) = 1; % binding affinity of each site > 1 (nonzero and greater than promoter affinity)
 % lb_overall(7) = 5; % must have one repressor
@@ -60,11 +64,22 @@ mut_mat_new = mut_mat(ind,:);
 real_data_new = real_data(:,ind);
 
 %% start to fit data
-[pars,diff] = fit_data(nbd,TF_conc_t,RNAp_conc_t,mut_mat_new,real_data_new,lb_overall,ub_overall,n_strain,file);
+[pars,diff] = fit_data(nbd,TF_conc_t,RNAp_conc_t,mut_mat_new,real_data_new,lb_overall,ub_overall,n_strain,group_array,file);
 
 %%
 final_energyi = pars(1:10);
-final_vmax = pars(11:end);
+vmax = pars(11:end);
+
+%%
+fn = fieldnames(group_array);
+if numel(fn) ~= length(vmax)
+    print('error');
+    return
+end 
+
+for k=1:numel(fn)
+    vmax_array.(fn{k}) = vmax(k);
+end
 
 %% now see how the newer parameters do
 figure();
@@ -74,7 +89,7 @@ for kk = 1:length(ind)
     errorbar(TF_conc_t,real_data(:,ind(kk)),real_data_std(:,ind(kk)),'LineStyle','none','LineWidth',2)
     hold on
     
-    TR = time_dep_TR_new_wSigma(nbd,final_energyi,TF_conc_t,RNAp_conc_t,mut_mat(ind(kk),:),final_vmax);
+    TR = time_dep_TR_new_wSigma(nbd,final_energyi,TF_conc_t,RNAp_conc_t,mut_mat(ind(kk),:),vmax_array,group_array);
     plot(TF_conc_t,TR,'LineWidth',2)
     xlabel('TF concentration')
     ylabel('transcription rate')

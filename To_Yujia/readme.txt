@@ -1,0 +1,9 @@
+- data.mat : the data of Pv and Ps activity dynamics
+- load_data.m : load the data from data.mat
+- f0A_full.m : the function to calculate promoter activity at a single time point
+- f_dynamics.m : the function to simulate the dynamics of promoter activities
+- f_error.m : the function to calculate the error between the simulated data and experimental data
+- fFit_full.m : the function for pso optimization
+- pso_search.m : the script for pso optimization
+- plot_raw_data.m : the script to plot the experimental data
+- plot_fit_data.m : the script to plot the fitted data

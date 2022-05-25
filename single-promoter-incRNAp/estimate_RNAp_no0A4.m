@@ -52,18 +52,27 @@ mut_123 = [0,0,0];
 
 
 RNAp_conc_t = pars(1:length(TF_conc_t));
-vmax = pars(length(TF_conc_t)+1:end);
+vmax = pars(end);
 % the array sigma_conc_t is the time-dependent parameter that incorporates
 % [RNAp] and promoter binding affinity. So later when we apply this array
 % to all mutation strains, can just let promoter energy be 0 always (keep
 % it fixed, because exp(0) = 1 and this will be multiplied by
 % [RNAp]-containing terms
 
+%%
+vmax_array.g1 = 0;
+vmax_array.g2 = vmax;
+
+group_array.g1 = [2:8]; % with respect to the on_config created by the algorithm,
+% 2:8 are strains with some mutations but not all
+group_array.g2 = 1;
+
 %% plot to see the fitting results
 figure();
 plot(TF_conc_t,mut_123_data,'o','LineWidth',3.5)
+errorbar(TF_conc_t,mut_123_data,real_data_std(:,end),'LineStyle','none','LineWidth',2)
 hold on
-plot(TF_conc_t,time_dep_TR_new_wSigma(nbd,energyi_sigma,TF_conc_t,H_conc_t,mut_123,vmax),'LineWidth',3.5)
+plot(TF_conc_t,time_dep_TR_new_wSigma(nbd,energyi_sigma,TF_conc_t,RNAp_conc_t,mut_123,vmax_array,group_array),'LineWidth',3.5)
 xlabel('[Spo0A]')
 ylabel('Promoter Activity')
 title(titlen)

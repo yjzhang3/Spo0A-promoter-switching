@@ -1,0 +1,74 @@
+function dx=Spo0A_full(t,x,gr,va,vc,vs,kg,kt,nt,p0e)
+parameters:
+vs=vs*22/1.5*4;
+kb=500;ke=10;kube=200;k1=200;k2=800;k3=200;k4=800;k5=500;k6=200;
+kc5=700;kc6=10;ki=100;kap=12;kadp=2;K=1.4;K0=0.14;kdeg=0.2+gr;pv=0.6;
+%p0e=0.05;
+ng=4;ksda=50;vsda=vs;
+reactions:
+->Spo0A |(0.4+0.5*(Spo0A_p^2)/(Spo0A_p^2+0.05^2))*fglobal(gr,0.8) 
+->Spo0B		|	2*fglobal(gr,0.7)
+->KinA|va*fglobal(gr,0.7)
+->KinC|vc*fglobal(gr,0.7)
+->Spo0F|2*fglobal(gr,0.2)
+->Spo0E		|	p0e*fglobal(gr,0.7)
+->Sda       |   vsda*fglobal(gr,0.7)
+
+
+Spo0B_p + Spo0A -> Spo0B_p_Spo0A		|	kb*Spo0B_p*Spo0A
+Spo0B_p_Spo0A   -> Spo0B_p + Spo0A 		|	k1*Spo0B_p_Spo0A
+Spo0B_p_Spo0A   -> Spo0A_p + Spo0B		|	k2*Spo0B_p_Spo0A
+Spo0A_p + Spo0B -> Spo0B_p_Spo0A		|	kb*Spo0B*Spo0A_p
+
+Spo0A_p + Spo0E  ->  Spo0A_p_Spo0E			|	kb*Spo0A_p*Spo0E
+Spo0A_p_Spo0E  ->  Spo0A_p + Spo0E			|	kube*Spo0A_p_Spo0E
+Spo0A_p_Spo0E  ->  Spo0A + Spo0E			|	ke*Spo0A_p_Spo0E
+
+
+Spo0F_p + Spo0B -> Spo0F_p_Spo0B		|	kb*Spo0F_p*Spo0B
+Spo0F_p_Spo0B   -> Spo0F_p + Spo0B 		|	k3*Spo0F_p_Spo0B
+Spo0F_p_Spo0B   ->  Spo0F + Spo0B_p		|	k4*Spo0F_p_Spo0B
+Spo0F + Spo0B_p ->  Spo0F_p_Spo0B		|	kb*Spo0F*Spo0B_p
+KinA_p + Spo0F ->   KinA_p_Spo0F		|	kb*KinA_p*Spo0F
+KinA_p_Spo0F   ->   KinA_p + Spo0F 		|	k5*KinA_p_Spo0F
+KinA_p_Spo0F   ->   KinA + Spo0F_p		|	k6*KinA_p_Spo0F
+KinA + Spo0F_p ->   KinA_p_Spo0F   		|	kb*KinA*Spo0F_p
+KinC_p + Spo0F ->   KinC_p_Spo0F		|	kb*KinC_p*Spo0F
+KinC_p_Spo0F   ->   KinC_p + Spo0F 		|	kc5*KinC_p_Spo0F
+KinC_p_Spo0F   ->   KinC + Spo0F_p		|	kc6*KinC_p_Spo0F
+KinC + Spo0F_p ->   KinC_p_Spo0F   		|	kb*KinC*Spo0F_p
+KinA->KinA_p		| kap*KinA
+KinA_p->KinA		| kadp*KinA_p
+Spo0F+KinA -> Spo0F_KinA			|	kb*Spo0F*KinA
+Spo0F_KinA  -> Spo0F+KinA			|	ki*Spo0F_KinA
+KinA+Sda -> KinA_Sda   |   kb*KinA*Sda
+KinA_Sda  ->KinA+Sda   |   5*KinA_Sda
+KinA_Sda  ->KinA       | 9*KinA_Sda
+KinC->KinC_p		| kap*KinC
+KinC_p->KinC		| kadp*KinC_p
+Spo0A          	->	  |	   kdeg*Spo0A          		
+Spo0A_p        	->	  |	   kdeg*Spo0A_p        		
+Spo0A_p_Spo0E  	->	  |	   kdeg*Spo0A_p_Spo0E  		
+Spo0F          	->	  |	   kdeg*Spo0F          		
+Spo0F_p        	->	  |	   kdeg*Spo0F_p        		
+Spo0F_p_Spo0B  	->	  |	   kdeg*Spo0F_p_Spo0B  		
+KinA->|kdeg*KinA
+KinA_p->|kdeg*KinA_p
+KinA_p_Spo0F->|kdeg*KinA_p_Spo0F
+KinC->|kdeg*KinC
+KinC_p->|kdeg*KinC_p
+KinC_p_Spo0F->|kdeg*KinC_p_Spo0F
+Spo0B->|kdeg*Spo0B
+Spo0E->|kdeg*Spo0E
+Spo0B_p->|kdeg*Spo0B_p
+Spo0B_p_Spo0A->|kdeg*Spo0B_p_Spo0A
+Spo0A_p->|kdeg*Spo0A_p
+Spo0A->|kdeg*Spo0A
+->TapA| 0.2*(Spo0A_p^nt)/(kt^nt+Spo0A_p^nt)*fglobal(gr,0.43)
+->IIG | 0.2*(Spo0A_p^ng)/(kg^ng+Spo0A_p^ng)*fglobal(gr,0.43)
+
+TapA->|(kdeg+1)*TapA
+IIG->|(kdeg+1)*IIG
+KinA_Sda-> |(kdeg)*KinA_Sda
+Sda-> | (gr+9)*Sda
+##############

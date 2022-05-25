@@ -23,14 +23,16 @@ mut_mat = [[1,1,1];[0,1,1];[1,0,1];[1,1,0];[0,0,1];[0,1,0];[0,0,1];[0,0,0]];
 
 %% set up bounds for energy
 
-lb_overall = zeros(29,1)-20;
-ub_overall = zeros(29,1)+20;
+lb_overall = zeros(30,1)-20;
+ub_overall = zeros(30,1)+20;
 
-% lb_overall(1:3) = 1; % binding affinity of each site > 1 (nonzero and greater than promoter affinity)
-% lb_overall(7) = 5; % must have one repressor
+ub_overall([1,3]) = 5; % 0A 1 and 3 have greater affinity than 0A 2
 
-lb_overall(4) = 0;
-ub_overall(4) = 0; % keep promoter energy fixed because we know it's embedded in concentration terms
+lb_overall(4:5) = 0;
+ub_overall(4:5) = 0; % keep promoter energy fixed because we know it's embedded in concentration terms
+
+lb_overall(7) = 0;
+ub_overall(7) = 0; % no interaction energy between 0A1 and 0A3
 
 % vmax should be positive
 lb_overall(14:end) = 0;
@@ -54,13 +56,13 @@ vmax_s = pars(14:21);
 vmax_v = pars(22:29);
 
 %% Ps promoter
-title_name = {'Ps','1*','2*','3*','12*','13*','23*','123*'};
+title_name = {'Ps-WT','1*','2*','3*','12*','13*','23*','123*'};
 
 figure();
 for kk = 1:length(inds)
-    subplot(4,2,kk)
+    subplot(3,1,kk)
     
-    errorbar(TF_conc_t,real_data_Ps(:,inds(kk)),real_data_Ps_std(:,inds(kk)),'LineStyle','none')
+    errorbar(TF_conc_t,real_data_Ps(:,inds(kk)),real_data_Ps_std(:,inds(kk)),'LineWidth',2,'LineStyle','none')
     hold on
     
     TR = time_dep_TR_new_wSigma(nbd,energyi_s,TF_conc_t,H_conc_t,mut_mat(inds(kk),:),vmax_s);
@@ -71,10 +73,10 @@ for kk = 1:length(inds)
 end
 %% Pv promoter
 clear kk
-title_name = {'Pv','1*4*','2*4*','3*4*','124*','134*','234*','1234*'};
+title_name = {'Pv-WT','1*4*','2*4*','3*4*','124*','134*','234*','1234*'};
 figure();
 for kk = 1:length(indv)
-    subplot(4,2,kk)
+    subplot(3,1,kk)
     
     errorbar(TF_conc_t,real_data_Pv(:,indv(kk)),real_data_Pv_std(:,indv(kk)),'LineWidth',2,'LineStyle','none')
     hold on

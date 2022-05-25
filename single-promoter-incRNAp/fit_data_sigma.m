@@ -12,10 +12,10 @@ function [pars,M] = fit_data_sigma(nbd,energyi,TF_conc_t,mut_RNAp,real_data)
 %% parameters
 rng default
 iter = 4;
-n_pars = length(TF_conc_t)+8;
+n_pars = length(TF_conc_t)+1; % all time-dependent RNAp plus a vmax
 lb = zeros(n_pars,1);
 ub = zeros(n_pars,1)+100;
-ub(end-7:end) = 100000;
+ub(end) = 100000;
 
 fun = @(p) objective_function_sigma(nbd,energyi,TF_conc_t,p,mut_RNAp,real_data);
 
