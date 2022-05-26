@@ -1,4 +1,4 @@
-function [pars,M] = fit_data(nbd,TF_conc_t,RNApH_conc_t,RNApA_conc_t,mut_mat,real_data,lb,ub,n_strain,file)
+function [pars,M] = fit_data(nbd,TF_conc_t,RNApH_conc_t,RNApA_conc_t,mut_mat,real_data,lb,ub,n_strain,file,group_array)
 % input: real data, time dependent TF concentration, number of binding
 % sites, time-dependent RNAP concentration, mutation matrix
 
@@ -12,9 +12,9 @@ function [pars,M] = fit_data(nbd,TF_conc_t,RNApH_conc_t,RNApA_conc_t,mut_mat,rea
 rng default
 iter = 8;
 
-fun = @(p) objective_function(nbd,p,TF_conc_t,RNApH_conc_t,RNApA_conc_t,mut_mat,real_data,n_strain);
+fun = @(p) objective_function(nbd,p,TF_conc_t,RNApH_conc_t,RNApA_conc_t,mut_mat,real_data,n_strain,group_array);
 
-nvars = 15+24; % if only 3 binding boxes are included 
+nvars = 15+numel(fieldnames(group_array)); % if only 3 binding boxes are included 
 
 % energy of each binding site and vmax of each configuration
 
