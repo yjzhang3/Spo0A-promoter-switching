@@ -13,7 +13,7 @@ c_arr(end) = RNAp_conc;
 
 % assume besides RNAP, all the other binding sites are bound by *one* type
 % of TF
-n_arr(1) = sum(config(1:end-1));
+n_arr(1) = sum(config(1:end-1)); % each TF is a DIMER of Spo0A~P
 c_arr(1) = TF_conc;
 
 end

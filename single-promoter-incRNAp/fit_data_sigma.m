@@ -14,7 +14,7 @@ rng default
 iter = 4;
 n_pars = length(TF_conc_t)+1; % all time-dependent RNAp plus a vmax
 lb = zeros(n_pars,1);
-ub = zeros(n_pars,1)+100;
+ub = zeros(n_pars,1)+25;
 ub(end) = 100000;
 
 fun = @(p) objective_function_sigma(nbd,energyi,TF_conc_t,p,mut_RNAp,real_data);

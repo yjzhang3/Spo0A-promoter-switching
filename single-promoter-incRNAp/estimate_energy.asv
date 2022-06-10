@@ -31,6 +31,7 @@ else
     RNAp_conc_t = H_conc_t;
 end
 
+titlename = title_name(ind);
 
 %% assign parameters
 nbd = 4;
@@ -38,12 +39,12 @@ mut_mat = [[1,1,1];[0,1,1];[1,0,1];[1,1,0];[0,0,1];[0,1,0];[0,0,1];[0,0,0]];
 
 %% set up bounds for energy
 
-fnv = fieldnames(vmax_array);
 
-if isempty(fnv)
+
+if isempty(vmax_array)
     n_vars = 10+numel(fieldnames(group_array));
 end
-if ~isempty(fnv)
+if ~isempty(vmax_array)
     n_vars = 10+numel(fieldnames(group_array))-numel(fieldnames(vmax_array));
 end
 

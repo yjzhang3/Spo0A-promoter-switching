@@ -1,0 +1,35 @@
+% fit single-promoter data in two batches and see if there is a fundamental
+% conflict in particular energy values to make the fit only partially good
+% for some mutants but not all of them
+
+%% Ps only
+
+% batch 1: those that fit really well during global fit
+
+
+n_strain = 4;
+ind = [3,5,7:8];
+ii = 's';
+vmax_array = struct();
+group_array.g1 = 1:8;
+file = 'Jun7-Psonly-1vmax-partial.txt';
+
+[bounds,final_energyi,vmax_array,diff] = estimate_energy(ii,n_strain,ind,file,group_array,vmax_array);
+save('Jun7-Psonly-1vmax-partial.mat')
+
+% batch 2: those that don't fit well with 2vmax (one unknown and one
+% pre-opt)
+
+% WT, 1*, 3*, 13* don't fit well
+% (but we will use the same vmax from last fit)
+
+n_strain = 4;
+ind = [1:2,4,6];
+ii = 's';
+vmax_array = struct();
+group_array.g1 = 1:8;
+file = 'Jun7-Psonly-1vmax-partial.txt';
+
+[bounds,final_energyi,vmax_array,diff] = estimate_energy(ii,n_strain,ind,file,group_array,vmax_array);
+save('Jun7-Psonly-1vmax-partial.mat')
+

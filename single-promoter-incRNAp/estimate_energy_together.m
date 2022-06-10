@@ -7,8 +7,8 @@ function estimate_energy_together(inds,indv,n_strains,n_strainv,filename)
 
 load('promoter_activity_single.mat')
 
-load('H_conc_t_reasonable.mat', 'H_conc_t')
-load('A_conc_t_reasonable.mat','A_conc_t')
+load('H_RNAP.mat', 'H_conc_t')
+load('A_RNAP.mat','A_conc_t')
 
 real_data_Ps = Ps_promoter_activity_mean(:,2:9); % exclude the real WT, instead WT is Ps only, no mutations
 real_data_Ps_std = Ps_promoter_activity_std(:,2:9);
