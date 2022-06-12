@@ -1,4 +1,5 @@
-function [pars,M] = fit_data_together(nbd,TF_conc_t,H_conc_t,A_conc_t,mut_mats,mut_matv,real_datas,real_datav,lb,ub,n_strains,n_strainv,filename)
+function [pars,M] = fit_data_together(nbd,TF_conc_t,H_conc_t,A_conc_t,mut_mats,mut_matv,real_datas,real_datav,lb,ub,n_strains,n_strainv,...
+    group_arrays,group_arrayv,vmax_arrays,vmax_arrayv,filename)
 % input: real data, time dependent TF concentration, number of binding
 % sites, time-dependent RNAP concentration, mutation matrix
 
@@ -12,9 +13,10 @@ function [pars,M] = fit_data_together(nbd,TF_conc_t,H_conc_t,A_conc_t,mut_mats,m
 rng default
 iter = 8;
 
-fun = @(p) objective_function_together(nbd,p,TF_conc_t,H_conc_t,A_conc_t,mut_mats,mut_matv,real_datas,real_datav,n_strains,n_strainv);
-% nvars = 10+8; % if only 3 binding boxes are included 
-nvars = 10+4+8+8;
+fun = @(p) objective_function_together(nbd,p,TF_conc_t,H_conc_t,A_conc_t,mut_mats,mut_matv,real_datas,real_datav,n_strains,n_strainv,...
+    group_arrays,group_arrayv,vmax_arrays,vmax_arrayv);
+
+nvars = 14+numel(fieldnames(group_arrays))-numel(fieldnames(vmax_arrays))+numel(fieldnames(group_arrayv))-numel(fieldnames(vmax_arrayv));
 
 % energy of each binding site and vmax of each configuration
 
