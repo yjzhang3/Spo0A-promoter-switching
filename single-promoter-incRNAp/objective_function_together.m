@@ -64,8 +64,8 @@ end
 
 % generate simulated data for all WT and mutated type
 
-sim_data_s = zeros(length(TF_conc_t),nstrains);
-sim_data_v = zeros(length(TF_conc_t),nstrainv);
+sim_data_s = zeros(length(TF_conc_t),n_strains);
+sim_data_v = zeros(length(TF_conc_t),n_strainv);
 
 for mm = 1:n_strains
     sim_data_s(:,mm) = time_dep_TR_new_wSigma(nbd,energyi_s,TF_conc_t,H_conc_t,mut_mats(mm,:),vmax_arrays,group_arrays);

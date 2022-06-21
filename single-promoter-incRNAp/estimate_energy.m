@@ -34,7 +34,7 @@ end
 
 %% assign parameters
 nbd = 4;
-mut_mat = [[1,1,1];[0,1,1];[1,0,1];[1,1,0];[0,0,1];[0,1,0];[0,0,1];[0,0,0]]; 
+mut_mat = [[1,1,1];[0,1,1];[1,0,1];[1,1,0];[0,0,1];[0,1,0];[1,0,0];[0,0,0]]; 
 
 %% set up bounds for energy
 
@@ -80,10 +80,6 @@ final_energyi = pars(1:10);
 vmax = pars(11:end);
 
 %%
-if numel(fieldnames(group_array)) ~= length(vmax)+ numel(fieldnames(vmax_array))
-    print('error');
-    return
-end 
 
 fn = fieldnames(group_array);
 ol = numel(fieldnames(vmax_array)); % original length of vmax array field

@@ -231,7 +231,8 @@ ii = 's';
 group_array.g1 = [1,6,8];
 group_array.g2 = 3;
 group_array.g3 = [2,4,5,7];
-load('Jun7-Psonly-1vmax-b1.mat', 'vmax_array') %vmax_array.g1 is the pre-optimized one!
+load('H_RNAP', 'vmax') %vmax_array.g1 is the pre-optimized one!
+vmax_array.g1 = vmax;
 file = 'Jun7-Psonly-1vmax-b9.txt';
 
 [bounds,final_energyi,vmax_array,diff] = estimate_energy(ii,n_strain,ind,file,group_array,vmax_array);

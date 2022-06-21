@@ -19,7 +19,7 @@ TF_conc_t = get_aps(2:10);
 
 %% assign parameters
 nbd = 4;
-mut_mat = [[1,1,1];[0,1,1];[1,0,1];[1,1,0];[0,0,1];[0,1,0];[0,0,1];[0,0,0]];
+mut_mat = [[1,1,1];[0,1,1];[1,0,1];[1,1,0];[0,0,1];[0,1,0];[1,0,0];[0,0,0]]; 
 
 %% set up bounds for energy
 
@@ -96,7 +96,7 @@ title_name = {'Ps-WT','1*','2*','3*','12*','13*','23*','123*'};
 
 figure();
 for kk = 1:length(inds)
-    subplot(3,1,kk)
+    subplot(4,2,kk)
     
     errorbar(TF_conc_t,real_data_Ps(:,inds(kk)),real_data_Ps_std(:,inds(kk)),'LineWidth',2,'LineStyle','none')
     hold on
@@ -113,7 +113,7 @@ clear kk
 title_name = {'Pv-WT','1*4*','2*4*','3*4*','124*','134*','234*','1234*'};
 figure();
 for kk = 1:length(indv)
-    subplot(3,1,kk)
+    subplot(4,2,kk)
     
     errorbar(TF_conc_t,real_data_Pv(:,indv(kk)),real_data_Pv_std(:,indv(kk)),'LineWidth',2,'LineStyle','none')
     hold on
@@ -125,3 +125,4 @@ for kk = 1:length(indv)
     ylabel('transcription rate')
     title(string(title_name(indv(kk))))
 end
+saveas(gcf,append(file(1:end-4),'.jpeg'))

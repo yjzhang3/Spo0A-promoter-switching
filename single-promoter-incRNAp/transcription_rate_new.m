@@ -1,4 +1,4 @@
- function TR = transcription_rate_new(nbd,energyi,mut,TF_conc,RNAp_conc,vmax_array,group_array)
+function TR = transcription_rate_new(nbd,energyi,mut,TF_conc,RNAp_conc,vmax_array,group_array)
 % this is another way to incorporate mutations in the data
 
 %% exclude configurations that have neither promoters bound
@@ -9,7 +9,6 @@ on_config = bins(on_ind,:);
 % consider mutated sites (exclude those configurations where mutated site
 % is 1)
 final_config = on_config;
-final_ind = [];
 for ss = 1:length(mut) % ss range from 1 to 3
     if mut(ss) == 0
         final_ind = find(final_config(:,ss)~=1); % final_ind stores the index 
@@ -17,6 +16,8 @@ for ss = 1:length(mut) % ss range from 1 to 3
         final_config = final_config(final_ind,:);
     end
 end
+
+final_ind = find(ismember(on_config,final_config,'row'));
 
 if mut == [1,1,1]
     final_ind = 1:8;
@@ -42,7 +43,8 @@ for oo = 1:length(final_config(:,1))
         config = final_config(oo,:);
     end
     curr_vmax = vmax_final(ind);
-    curr_tr = curr_vmax*prob_per_config_new(nbd,config,energyi,mut,TF_conc,RNAp_conc);
+    curr_p = prob_per_config_new(nbd,config,energyi,mut,TF_conc,RNAp_conc);
+    curr_tr = curr_vmax*curr_p;
     TR = TR + curr_tr;
 end
 
