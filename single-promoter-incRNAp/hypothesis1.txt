@@ -1,0 +1,104 @@
+% hypothesis 1 says that mutation on sites closest to promoter might cause
+% unwanted mutation on promoter region and changed RNAp binding affinity to
+% promoter
+%% apply [RNAP] obtained from 123* to all strains that have 0A3 mutated
+% and let's use vmax from 123* as well
+% if optimization is really bad, then we know a universal vmax is not sufficient
+% we will add a differnt vmax for configurations that are not 000
+
+% order at which strains are placed: WT,1*,2*,3*,12*,13*,23*,123*
+load('H_RNAP.mat','vmax')
+ii = 's';
+ind = [4,6,7]; % why not adding 123*? The energy list doesn't even matter for 123*, so adding it is not helpful
+n_strain = length(ind);
+
+group_array.g1 = [1:8];
+vmax_array.g1 = vmax;
+file = 'Psonly-all0A3mut-estimateE.txt';
+
+[bounds,final_energyi,vmax_array,diff] = estimate_energy(ii,n_strain,ind,file,group_array,vmax_array);
+% save('Psonly-WT-1vmax.mat')
+save('Psonly-all0A3mut-estimateE.mat')
+
+%% apply [RNAP] obtained from 123* to all strains that have 0A3 mutated
+% and let's use vmax from 123* and add another one because optimization
+% from last round is bad
+
+clear all
+% order at which strains are placed: WT,1*,2*,3*,12*,13*,23*,123*
+load('H_RNAP.mat','vmax')
+ii = 's';
+ind = [4,6,7]; % 3*,13*,23*,123*
+% why not adding 123*? The energy list doesn't even matter for 123*, so adding it is not helpful
+n_strain = length(ind);
+
+group_array.g1 = 1;
+vmax_array.g1 = vmax;
+group_array.g2 = [2:8];
+
+file = 'Psonly-all0A3mut-2vmax-estimateE.txt';
+
+[bounds,final_energyi,vmax_array,diff] = estimate_energy(ii,n_strain,ind,file,group_array,vmax_array);
+% save('Psonly-WT-1vmax.mat')
+save('Psonly-all0A3mut-2vmax-estimateE.mat')
+
+%% now apply the energy obtained above to fit the rest of the strains (1*,2*,12*) and see [RNAp] dynamics
+% keep using the same vmax as above. Don't try to add more
+clear all
+load('Psonly-all0A3mut-2vmax-estimateE.mat','final_energyi')
+load('Psonly-all0A3mut-2vmax-estimateE.mat','group_array')
+load('Psonly-all0A3mut-2vmax-estimateE.mat','vmax_array')
+ii = 's';
+ind = [2,3,5]; %1*,2*,12*
+energyi = final_energyi;
+file = 'Psonly-allnon0A3mut-2vmax-estimateRNAp.txt';
+[RNAp_conc_t,vmax_array,diff] = estimate_RNAp_no0A4(ii,ind,energyi,vmax_array,group_array,file)
+save('Psonly-allnon0A3mut-2vmax-estimateRNAp.mat');
+% the overall MSE is very bad. So we should have individual RNAP for each
+% strain
+
+%% individually fit to the non 3* strain. 1* first
+clear all
+load('Psonly-all0A3mut-2vmax-estimateE.mat','final_energyi')
+load('Psonly-all0A3mut-2vmax-estimateE.mat','group_array')
+load('Psonly-all0A3mut-2vmax-estimateE.mat','vmax_array')
+ii = 's';
+ind = 2; %1*
+energyi = final_energyi;
+file = 'Psonly-non0A3mutno1-2vmax-estimateRNAp.txt';
+[RNAp_conc_t,vmax_array,diff] = estimate_RNAp_no0A4(ii,ind,energyi,vmax_array,group_array,file)
+save('Psonly-non0A3mutno1-2vmax-estimateRNAp.mat');
+% the overall MSE is very bad. So we should have individual RNAP for each
+% strain
+
+%% individually fit to the non 3* strain. Then 2*
+clear all
+load('Psonly-all0A3mut-2vmax-estimateE.mat','final_energyi')
+load('Psonly-all0A3mut-2vmax-estimateE.mat','group_array')
+load('Psonly-all0A3mut-2vmax-estimateE.mat','vmax_array')
+ii = 's';
+ind = 3; %2*
+energyi = final_energyi;
+file = 'Psonly-non0A3mutno2-2vmax-estimateRNAp.txt';
+[RNAp_conc_t,vmax_array,diff] = estimate_RNAp_no0A4(ii,ind,energyi,vmax_array,group_array,file)
+save('Psonly-non0A3mutno2-2vmax-estimateRNAp.mat');
+% the overall MSE is very bad. So we should have individual RNAP for each
+% strain
+% really bad?? RNAp is not high enough....using the current energy
+
+%% individually fit to the non 3* strain. Then 12*
+clear all
+load('Psonly-all0A3mut-2vmax-estimateE.mat','final_energyi')
+load('Psonly-all0A3mut-2vmax-estimateE.mat','group_array')
+load('Psonly-all0A3mut-2vmax-estimateE.mat','vmax_array')
+ii = 's';
+ind = 5; %12*
+energyi = final_energyi;
+file = 'Psonly-non0A3mutno3-2vmax-estimateRNAp.txt';
+[RNAp_conc_t,vmax_array,diff] = estimate_RNAp_no0A4(ii,ind,energyi,vmax_array,group_array,file)
+save('Psonly-non0A3mutno3-2vmax-estimateRNAp.mat');
+% the overall MSE is very bad. So we should have individual RNAP for each
+% strain
+
+%% conclusion
+% besides 2*, all other strains can find a unique RNAP to each strain

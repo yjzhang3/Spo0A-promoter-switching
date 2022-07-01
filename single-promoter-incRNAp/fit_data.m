@@ -12,7 +12,7 @@ function [pars,M] = fit_data(nbd,TF_conc_t,RNAp_conc_t,mut_mat,real_data,lb,ub,n
 rng default
 iter = 8;
 
-options = optimoptions('particleswarm','SwarmSize',50,'HybridFcn',@fmincon);
+% options = optimoptions('particleswarm','SwarmSize',50,'HybridFcn',@fmincon);
 
 fun = @(p) objective_function(nbd,p,TF_conc_t,RNAp_conc_t,mut_mat,real_data,n_strain,vmax_array,group_array);
 
@@ -34,7 +34,7 @@ end
 pars_all = zeros(iter,nvars);
 diff_all = zeros(iter,1);
 for n = 1:iter
-    [x,fval,~,~] = particleswarm(fun,nvars,lb,ub,options);
+    [x,fval,~,~] = particleswarm(fun,nvars,lb,ub);
 %     [x,fval,~,~] = fmincon(fun,zeros(nvars,1),[],[],[],[],lb,ub);
 %     [x,fval,~,~] = fminsearch(fun,lb);
     pars_all(n,:) = x;
