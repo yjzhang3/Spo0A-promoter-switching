@@ -1,12 +1,13 @@
-function diff = objective_function(nbd,p,TF_conc_t,RNAp_conc_t,mut_mat,real_data,n_strain,group_array,ind)
+function [diff,vmax_per_strain_final] = objective_function(nbd,p,TF_conc_t,RNAp_conc_t,mut_mat,real_data,group_array,ind)
 
 % this objective function is for validation or real fitting when time-dependent RNAp is
 % known
-
+n_strain = length(ind);
 % n_strain specifies the number of strains used for fitting
 
 % assign parameters (RNAp is not independent of energies, so it's not a
 % parameter to optimize)
+
 energyi = p(1:10);
 vmax_raw = p(11:end);
 
@@ -31,11 +32,6 @@ if n_strain > 1
         sim_data(:,mm) = time_dep_TR_new_wSigma(nbd,energyi,TF_conc_t,RNAp_conc_t,mut_mat(mm,:),vmax_per_strain_final(mm));
     end
 end
-% if n_strain == 1
-%     sim_data = time_dep_TR_new_wSigma(nbd,energyi,TF_conc_t,RNAp_conc_t,mut_mat,vmax_raw);
-% end
-
-% now sim_data should be the same dimension as real_data
 
 diff = weighted_msd(real_data(:),sim_data(:));
 

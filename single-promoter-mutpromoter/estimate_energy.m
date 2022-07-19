@@ -1,8 +1,11 @@
-function [bounds,final_energyi,vmax_raw,diff,pars] = estimate_energy(ii,ind,file,group_array)
+function [bounds,diff,pars] = estimate_energy(ii,ind,file,group_vmax_array,group_delta_array)
 %% this file finds the energy for smaller set of data
 %% load data and choose strains
 % ii tells us Pv or Ps
-% n_strain tell us the number of strains to fit with
+% group_vmax_array tells us how to group vmax (which mutation strains share
+% the same vmax)
+% same as group_delta_array, it tell us us how to group unique deltas
+% (which mutation strain the same delta)
 % ind tells us which strain to fit
 
 % energyi = 1,2,3,p,12,13,1p,23,2p,3p
@@ -37,7 +40,7 @@ nbd = 4;
 mut_mat = [[1,1,1];[0,1,1];[1,0,1];[1,1,0];[0,0,1];[0,1,0];[1,0,0];[0,0,0]]; 
 
 %% set up bounds for energy
-n_vars = 10+numel(fieldnames(group_array));
+n_vars = 10+numel(fieldnames(group_vmax_array))+numel(fieldnames(group_delta_array));
 lb_overall = zeros(n_vars,1)-30;
 ub_overall = zeros(n_vars,1)+20;
 
@@ -51,8 +54,10 @@ ub_overall(4) = 0; % keep promoter energy fixed because we know it's embedded in
 % ub_overall(6) = 0; % TF bound at 0A1 and 3 probably won't have interaction energy
 
 % vmax should be positive
-lb_overall(11:end) = 0;
-ub_overall(11:end) = 1000;
+% I'll make sure the parameters responsible for delta are always before
+% vmax
+lb_overall(11+numel(fieldnames(group_delta_array)):end) = 0;
+ub_overall(11+numel(fieldnames(group_delta_array)):end) = 1000;
 
 bounds.lb = lb_overall;
 bounds.ub = ub_overall;
@@ -66,21 +71,11 @@ real_data_new = real_data(:,ind);
 %% start to fit data
 
 % group and vmax array here specify which *strains* share the same vmax
-[pars,diff] = fit_data(nbd,TF_conc_t,RNAp_conc_t,mut_mat_new,real_data_new,lb_overall,ub_overall,group_array,ind,file);
+[pars,diff] = fit_data(nbd,TF_conc_t,RNAp_conc_t,mut_mat_new,real_data_new,lb_overall,ub_overall,group_vmax_array,group_delta_array,ind,file);
 
 %%
-% final_energyi = pars(1:10);
-% vmax_raw = pars(11:end);
-% 
-% fn = fieldnames(group_array);
-% vmax_per_strain = zeros(8,1);
-% for k=1:numel(fn)
-%     curr_ind = group_array.(fn{k});
-%     curr_vmax = vmax_raw(k);
-%     vmax_per_strain(curr_ind) = curr_vmax;
-% end
-% vmax_per_strain_final = vmax_per_strain(ind);
-[~,vmax_per_strain_final] = objective_function(nbd,pars,TF_conc_t,RNAp_conc_t,mut_mat_new,real_data_new,group_array,ind);
+[~,sim_data] = objective_function(nbd,pars,TF_conc_t,RNAp_conc_t,mut_mat_new,real_data_new,group_vmax_array,group_delta_array,ind);
+
 %% now see how the newer parameters do
 figure();
 for kk = 1:length(ind)
@@ -89,8 +84,7 @@ for kk = 1:length(ind)
     errorbar(TF_conc_t,real_data(:,ind(kk)),real_data_std(:,ind(kk)),'LineStyle','none','LineWidth',2)
     hold on
     
-    TR = time_dep_TR_new_wSigma(nbd,final_energyi,TF_conc_t,RNAp_conc_t,mut_mat(ind(kk),:),vmax_per_strain_final(kk));
-    plot(TF_conc_t,TR,'LineWidth',2)
+    plot(TF_conc_t,sim_data(:,kk),'LineWidth',2)
     xlabel('TF concentration')
     ylabel('transcription rate')
     

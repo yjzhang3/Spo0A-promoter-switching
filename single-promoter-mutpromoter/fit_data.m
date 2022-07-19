@@ -1,4 +1,4 @@
-function [pars,M] = fit_data(nbd,TF_conc_t,RNAp_conc_t,mut_mat,real_data,lb,ub,group_array,ind,file)
+function [pars,M] = fit_data(nbd,TF_conc_t,RNAp_conc_t,mut_mat,real_data,lb,ub,group_vmax_array,group_delta_array,ind,file)
 
 % input: real data, time dependent TF concentration, number of binding
 % sites, time-dependent RNAP concentration, mutation matrix
@@ -11,14 +11,14 @@ function [pars,M] = fit_data(nbd,TF_conc_t,RNAp_conc_t,mut_mat,real_data,lb,ub,g
 
 %% parameters
 rng default
-iter = 100;
+iter = 8;
 
 % options = optimoptions('particleswarm','SwarmSize',50,'HybridFcn',@fmincon);
 
-fun = @(p) objective_function(nbd,p,TF_conc_t,RNAp_conc_t,mut_mat,real_data,group_array,ind);
+fun = @(p) objective_function(nbd,p,TF_conc_t,RNAp_conc_t,mut_mat,real_data,group_vmax_array,group_delta_array,ind);
 
 %% particle swarm
-nvars = 10+numel(fieldnames(group_array));
+nvars = 10+numel(fieldnames(group_vmax_array))+numel(fieldnames(group_delta_array));
 pars_all = zeros(iter,nvars);
 diff_all = zeros(iter,1);
 for n = 1:iter

@@ -1,4 +1,4 @@
-function plot_raw_data(ii)
+function plot_raw_data(ii,ind,titlestring)
 
 load('promoter_activity_single.mat')
 
@@ -23,26 +23,37 @@ if ii == 's'
 end
 
 figure();
-for kk = 1:4
+% for kk = 1:4
+%     
+%     errorbar(wta,real_data(:,kk),real_data_std(:,kk),'LineWidth',4)
+%     hold on
+%     title(titlen)
+%     ylim([0 ub])
+%     xlabel('TF Concentration')
+%     ylabel('Promoter Activity (Miller Unit)')
+% end
+% legend('WT','1*','2*','3*')
+% 
+% figure();
+% for kk = [1,5:8]
+%     errorbar(wta,real_data(:,kk),real_data_std(:,kk),'LineWidth',4)
+%     hold on
+%     title(titlen)
+%     ylim([0 ub])
+%     xlabel('TF Concentration')
+%     ylabel('Promoter Activity (Miller Unit)')
+% end
+% legend('WT','12*','13*','23*','123*')
+
+for kk = 1:length(ind)
     
-    errorbar(wta,real_data(:,kk),real_data_std(:,kk),'LineWidth',4)
+    errorbar(wta,real_data(:,ind(kk)),real_data_std(:,ind(kk)),'LineWidth',4)
     hold on
     title(titlen)
-    ylim([0 ub])
+    ylim([0 800])
     xlabel('TF Concentration')
     ylabel('Promoter Activity (Miller Unit)')
 end
-legend('WT','1*','2*','3*')
-
-figure();
-for kk = [1,5:8]
-    errorbar(wta,real_data(:,kk),real_data_std(:,kk),'LineWidth',4)
-    hold on
-    title(titlen)
-    ylim([0 ub])
-    xlabel('TF Concentration')
-    ylabel('Promoter Activity (Miller Unit)')
-end
-legend('WT','12*','13*','23*','123*')
-
+legend(titlestring)
+set(gca,'FontSize',15)
 end

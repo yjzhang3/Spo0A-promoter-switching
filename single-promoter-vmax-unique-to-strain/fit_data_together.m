@@ -1,5 +1,5 @@
-function [pars,M] = fit_data(nbd,TF_conc_t,RNAp_conc_t,mut_mat,real_data,lb,ub,group_array,ind,file)
-
+function [pars,M] = fit_data_together(nbd,TF_conc_t,H_conc_t,A_conc_t,mut_mat_s,mut_mat_v,real_data_s,real_data_v,lb,ub,...
+    group_array_s,group_array_v,ind_s,ind_v,filename)
 % input: real data, time dependent TF concentration, number of binding
 % sites, time-dependent RNAP concentration, mutation matrix
 
@@ -11,21 +11,24 @@ function [pars,M] = fit_data(nbd,TF_conc_t,RNAp_conc_t,mut_mat,real_data,lb,ub,g
 
 %% parameters
 rng default
-iter = 100;
+iter = 8;
 
-% options = optimoptions('particleswarm','SwarmSize',50,'HybridFcn',@fmincon);
+fun = @(p) objective_function_together(nbd,p,TF_conc_t,H_conc_t,A_conc_t,...
+    mut_mat_s,mut_mat_v,real_data_s,real_data_v,group_array_s,group_array_v,...
+    ind_s,ind_v);
 
-fun = @(p) objective_function(nbd,p,TF_conc_t,RNAp_conc_t,mut_mat,real_data,group_array,ind);
+nvars = 14+numel(fieldnames(group_array_s))+numel(fieldnames(group_array_v));
+
+% energy of each binding site and vmax of each configuration
 
 %% particle swarm
-nvars = 10+numel(fieldnames(group_array));
 pars_all = zeros(iter,nvars);
 diff_all = zeros(iter,1);
 for n = 1:iter
     [x,fval,~,~] = particleswarm(fun,nvars,lb,ub);
     pars_all(n,:) = x;
     diff_all(n) = fval;
-    create_parameter_file(file, x, fval);
+    create_parameter_file(filename, x, fval)
 end
 
 [M,I] = min(diff_all);

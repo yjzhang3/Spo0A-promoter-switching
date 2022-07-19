@@ -1,4 +1,4 @@
-function [pars,diff] = estimate_energy_together(inds,indv,n_strains,n_strainv,group_arrays,group_arrayv,vmax_arrays,vmax_arrayv,filename)
+function [pars,diff] = estimate_energy_together(group_array_s,group_array_v,ind_s,ind_v,filename)
 %% this file finds the energy for smaller set of data for *both* promoters
 %% load data and choose strains
 % ii tells us Pv or Ps
@@ -23,7 +23,7 @@ mut_mat = [[1,1,1];[0,1,1];[1,0,1];[1,1,0];[0,0,1];[0,1,0];[1,0,0];[0,0,0]];
 
 %% set up bounds for energy
 
-nvars = 14+numel(fieldnames(group_arrays))-numel(fieldnames(vmax_arrays))+numel(fieldnames(group_arrayv))-numel(fieldnames(vmax_arrayv));
+nvars = 14+numel(fieldnames(group_array_s))+numel(fieldnames(group_array_v));
 
 lb_overall = zeros(nvars,1)-30;
 ub_overall = zeros(nvars,1)+30;
@@ -45,53 +45,53 @@ bounds.ub = ub_overall;
 
 %% index smaller dataset
     
-mut_mat_new_s = mut_mat(inds,:); 
-mut_mat_new_v = mut_mat(indv,:); 
+mut_mat_new_s = mut_mat(ind_s,:); 
+mut_mat_new_v = mut_mat(ind_v,:); 
 
-real_data_new_s = real_data_Ps(:,inds);
-real_data_new_v = real_data_Pv(:,indv);
+real_data_new_s = real_data_Ps(:,ind_s);
+real_data_new_v = real_data_Pv(:,ind_v);
 %% start to fit data
 
-[pars,diff] = fit_data_together(nbd,TF_conc_t,H_conc_t,A_conc_t,mut_mat_new_s,mut_mat_new_v,...
-    real_data_new_s,real_data_new_v,lb_overall,ub_overall,n_strains,n_strainv,...
-group_arrays,group_arrayv,vmax_arrays,vmax_arrayv,filename);
+[pars,diff] = fit_data_together(nbd,TF_conc_t,H_conc_t,A_conc_t,mut_mat_new_s,mut_mat_new_v,real_data_new_s,real_data_new_v,lb,ub,...
+    group_array_s,group_array_v,ind_s,ind_v,filename);
 
 %% assign group array and vmax array
-[~,energyi_s,energyi_v,vmax_arrays,vmax_arrayv] = objective_function_together(nbd,pars,TF_conc_t,H_conc_t,A_conc_t,mut_mat_new_s,mut_mat_new_v,real_data_new_s,real_data_new_v,n_strains,n_strainv,...
-    group_arrays,group_arrayv,vmax_arrays,vmax_arrayv);
+[~,energyi_s,energyi_v,vmax_per_strain_final_s,vmax_per_strain_final_v] = ...
+    objective_function_together(nbd,pars,TF_conc_t,H_conc_t,A_conc_t,...
+    mut_mat_new_s,mut_mat_new_v,real_data_new_s,real_data_new_v,...
+    group_array_s,group_array_v,ind_s,ind_v);
 
 %% Ps promoter
 title_name = {'Ps-WT','1*','2*','3*','12*','13*','23*','123*'};
 
 figure();
-for kk = 1:length(inds)
+for kk = 1:length(ind_s)
     subplot(4,2,kk)
     
-    errorbar(TF_conc_t,real_data_Ps(:,inds(kk)),real_data_Ps_std(:,inds(kk)),'LineWidth',2,'LineStyle','none')
+    errorbar(TF_conc_t,real_data_Ps(:,ind_s(kk)),real_data_Ps_std(:,ind_s(kk)),'LineWidth',2,'LineStyle','none')
     hold on
     
-    TR = time_dep_TR_new_wSigma(nbd,energyi_s,TF_conc_t,H_conc_t,mut_mat(inds(kk),:),vmax_arrays,group_arrays);
+    TR = time_dep_TR_new_wSigma(nbd,energyi_s,TF_conc_t,H_conc_t,mut_mat(ind_s(kk),:),vmax_per_strain_final_s(kk));
     plot(TF_conc_t,TR,'LineWidth',2)
     ylim([0 1000])
     xlabel('TF concentration')
     ylabel('transcription rate')
-    title(string(title_name(inds(kk))))
+    title(string(title_name(ind_s(kk))))
 end
 %% Pv promoter
 clear kk
 title_name = {'Pv-WT','1*4*','2*4*','3*4*','124*','134*','234*','1234*'};
 figure();
-for kk = 1:length(indv)
+for kk = 1:length(ind_v)
     subplot(4,2,kk)
     
-    errorbar(TF_conc_t,real_data_Pv(:,indv(kk)),real_data_Pv_std(:,indv(kk)),'LineWidth',2,'LineStyle','none')
+    errorbar(TF_conc_t,real_data_Pv(:,ind_v(kk)),real_data_Pv_std(:,ind_v(kk)),'LineWidth',2,'LineStyle','none')
     hold on
     
-    TR = time_dep_TR_new_wSigma(nbd,energyi_v,TF_conc_t,A_conc_t,mut_mat(indv(kk),:),vmax_arrayv,group_arrayv);
+    TR = time_dep_TR_new_wSigma(nbd,energyi_v,TF_conc_t,A_conc_t,mut_mat(ind_v(kk),:),vmax_per_strain_final_v(kk));
     plot(TF_conc_t,TR,'LineWidth',2)
     ylim([0 1000])
     xlabel('TF concentration')
     ylabel('transcription rate')
-    title(string(title_name(indv(kk))))
+    title(string(title_name(ind_v(kk))))
 end
-saveas(gcf,append(file(1:end-4),'.jpeg'))
